@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Evidencija odsustva</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#f7f6f3;--surface:#fff;--surface2:#f0efe9;--border:rgba(0,0,0,.09);--border2:rgba(0,0,0,.15);--text:#1a1917;--text2:#6b6a65;--text3:#9c9b96;--accent:#1a1917;--r:10px;--rl:14px;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:14px;}
+  #ls{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:2rem;}
+  .lc{background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);padding:2.5rem 2rem;width:100%;max-width:380px;}
+  .lc .logo{font-size:12px;font-weight:500;color:var(--text3);letter-spacing:.09em;text-transform:uppercase;margin-bottom:2rem;}
+  .lc h1{font-size:22px;font-weight:500;margin-bottom:.3rem;}
+  .lc p{font-size:13px;color:var(--text2);margin-bottom:2rem;}
+  .fg{margin-bottom:13px;}
+  .fg label{display:block;font-size:12px;font-weight:500;color:var(--text2);margin-bottom:5px;}
+  .fg input,.fg select,.fg textarea{width:100%;padding:9px 12px;border:1px solid var(--border2);border-radius:var(--r);font-family:inherit;font-size:13px;background:var(--surface);color:var(--text);outline:none;transition:border-color .15s;}
+  .fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--accent);}
+  .fg textarea{resize:vertical;min-height:65px;}
+  .hint{font-size:11px;color:var(--text3);margin-top:4px;}
+  .btn{display:inline-flex;align-items:center;gap:6px;padding:9px 18px;border-radius:var(--r);border:1px solid var(--border2);background:var(--surface);color:var(--text);font-family:inherit;font-size:13px;font-weight:500;cursor:pointer;transition:all .15s;}
+  .btn:hover{background:var(--surface2);}
+  .btn-dark{background:var(--accent);color:#fff;border-color:var(--accent);}
+  .btn-dark:hover{opacity:.86;background:var(--accent);}
+  .btn-sm{padding:5px 11px;font-size:12px;}
+  .btn-full{width:100%;justify-content:center;}
+  .btn-danger{border-color:#e57373;color:#c62828;}
+  .btn-danger:hover{background:#fff5f5;}
+  .btn-warn{border-color:#ffb74d;color:#e65100;}
+  .btn-warn:hover{background:#fff8f0;}
+  .ebox{font-size:12px;color:#c62828;background:#fdecea;border:1px solid #ef9a9a;border-radius:var(--r);padding:8px 12px;margin-top:10px;display:none;}
+  #app{display:none;min-height:100vh;}
+  .topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:0 1.5rem;height:54px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;}
+  .tbl{display:flex;align-items:center;gap:12px;}
+  .tbl-logo{font-size:13px;font-weight:600;letter-spacing:.04em;}
+  .tdiv{width:1px;height:16px;background:var(--border2);}
+  .trole{font-size:12px;color:var(--text2);}
+  .tbr{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+  .uchip{display:flex;align-items:center;gap:8px;padding:4px 10px;background:var(--surface2);border-radius:999px;}
+  .uav{width:26px;height:26px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;}
+  .uname{font-size:12px;font-weight:500;}
+  .main{padding:1.5rem;max-width:1100px;margin:0 auto;}
+  .ph{margin-bottom:1.5rem;}
+  .ph h2{font-size:19px;font-weight:500;}
+  .ph p{font-size:13px;color:var(--text2);margin-top:3px;}
+  .sr{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:10px;margin-bottom:1.5rem;}
+  .sc{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:13px 15px;}
+  .sc .sl{font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px;}
+  .sc .sv{font-size:26px;font-weight:300;font-family:'DM Mono',monospace;}
+  .toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:1.25rem;}
+  .toolbar input,.toolbar select{padding:8px 12px;border:1px solid var(--border2);border-radius:var(--r);font-family:inherit;font-size:13px;background:var(--surface);color:var(--text);outline:none;}
+  .toolbar input{flex:1;min-width:140px;}
+  .tc{background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);overflow:hidden;}
+  .tw{overflow-x:auto;}
+  table{width:100%;border-collapse:collapse;min-width:560px;}
+  thead th{padding:10px 12px;font-size:11px;font-weight:500;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;background:var(--surface2);border-bottom:1px solid var(--border);text-align:left;white-space:nowrap;cursor:pointer;user-select:none;}
+  thead th:hover{color:var(--text);}
+  tbody tr{border-bottom:1px solid var(--border);transition:background .1s;}
+  tbody tr:last-child{border-bottom:none;}
+  tbody tr:hover{background:#fafaf8;}
+  tbody td{padding:9px 12px;vertical-align:middle;}
+  .es{padding:2.5rem;text-align:center;color:var(--text3);font-size:13px;}
+  .badge{display:inline-block;font-size:11px;font-weight:500;padding:3px 9px;border-radius:999px;white-space:nowrap;font-family:'DM Mono',monospace;}
+  .b-bolovanje{background:#fdecea;color:#b71c1c;}
+  .b-slobodan{background:#e3f2fd;color:#0d47a1;}
+  .b-godišnji{background:#fff8e1;color:#f57f17;}
+  .b-prekovremeni{background:#e8f5e9;color:#1b5e20;}
+  .b-placeno{background:#fce4ec;color:#880e4f;}
+  .b-neplaceno{background:#f3f3f0;color:#555550;}
+  .b-radodkuce{background:#ede7f6;color:#4527a0;}
+  .b-slava{background:#fff3e0;color:#bf360c;}
+  .b-odobreno{background:#e8f5e9;color:#1b5e20;}
+  .b-cekanju{background:#fff8e1;color:#f57f17;}
+  .b-odbijeno{background:#fdecea;color:#b71c1c;}
+  .tabs{display:flex;gap:2px;background:var(--surface2);padding:4px;border-radius:var(--r);margin-bottom:1.5rem;width:fit-content;flex-wrap:wrap;}
+  .tab{padding:7px 14px;font-size:13px;font-weight:500;border-radius:7px;border:none;background:transparent;color:var(--text2);cursor:pointer;transition:all .15s;}
+  .tab.active{background:var(--surface);color:var(--text);box-shadow:0 1px 3px rgba(0,0,0,.08);}
+  .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.28);z-index:200;align-items:center;justify-content:center;padding:1rem;overflow-y:auto;}
+  .overlay.open{display:flex;}
+  .modal{background:var(--surface);border-radius:var(--rl);border:1px solid var(--border);padding:1.75rem;width:100%;max-width:420px;max-height:90vh;overflow-y:auto;}
+  .modal h3{font-size:16px;font-weight:500;margin-bottom:1.25rem;}
+  .fr2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .ma{display:flex;justify-content:flex-end;gap:8px;margin-top:1.25rem;}
+  .ag{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px;}
+  .acard{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:14px 16px;}
+  .act{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+  .aav{width:38px;height:38px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;flex-shrink:0;}
+  .an{font-size:14px;font-weight:500;}
+  .ad{font-size:12px;color:var(--text2);}
+  .am{font-size:11px;color:var(--text3);margin-bottom:10px;font-family:'DM Mono',monospace;}
+  .aac{display:flex;gap:6px;flex-wrap:wrap;}
+  .pr{display:flex;gap:6px;align-items:center;}
+  .pr input{flex:1;}
+  .pr button{padding:9px 12px;border:1px solid var(--border2);border-radius:var(--r);background:var(--surface2);cursor:pointer;font-size:13px;}
+  .loading{display:flex;align-items:center;justify-content:center;padding:3rem;color:var(--text3);font-size:13px;gap:8px;}
+  .spin{width:16px;height:16px;border:2px solid var(--border2);border-top-color:var(--text2);border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0;}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .toast{position:fixed;bottom:1.5rem;right:1.5rem;background:var(--accent);color:#fff;padding:10px 16px;border-radius:var(--r);font-size:13px;z-index:999;opacity:0;transition:opacity .2s;pointer-events:none;}
+  .toast.show{opacity:1;}
+  @media(max-width:600px){.topbar{padding:0 1rem;}.main{padding:1rem;}.fr2{grid-template-columns:1fr;}.tbr .btn-sm:not(:last-child){display:none;}}
+</style>
+</head>
+<body>
+
+<div id="ls">
+  <div class="lc">
+    <div class="logo">Evidencija odsustva</div>
+    <h1>Prijavite se</h1>
+    <p>Unesite korisničko ime i lozinku koje vam je dodelio administrator.</p>
+    <div class="fg"><label>Korisničko ime</label><input type="text" id="lu" placeholder="npr. marko.petrovic" autocomplete="username"></div>
+    <div class="fg"><label>Lozinka</label>
+      <div class="pr"><input type="password" id="lp" placeholder="••••••••" autocomplete="current-password"><button type="button" onclick="tp('lp',this)">👁</button></div>
+    </div>
+    <div id="lerr" class="ebox">Pogrešno korisničko ime ili lozinka.</div>
+    <button class="btn btn-dark btn-full" style="margin-top:1rem" id="loginbtn" onclick="doLogin()">Prijavite se</button>
+    <p class="hint" style="margin-top:1.25rem;text-align:center">Podaci se čuvaju u cloudu — svi vide iste podatke.</p>
+  </div>
+</div>
+
+<div id="app">
+  <div class="topbar">
+    <div class="tbl">
+      <span class="tbl-logo">Odsustva</span>
+      <div class="tdiv"></div>
+      <span class="trole" id="troled">Zaposleni</span>
+    </div>
+    <div class="tbr">
+      <div class="uchip"><div class="uav" id="topav">MK</div><span class="uname" id="topnm">—</span></div>
+      <button class="btn btn-sm" id="btnmypw" style="display:none" onclick="oMyPW()">Lozinka</button>
+      <button class="btn btn-sm" onclick="doLogout()">Odjava</button>
+    </div>
+  </div>
+  <div class="main">
+
+    <!-- EMPLOYEE VIEW -->
+    <div id="empv">
+      <div class="ph"><h2>Moja evidencija</h2><p>Odsustva i prekovremeni sati</p></div>
+      <div class="tabs">
+        <button class="tab active" onclick="et('odsustva')">Odsustva</button>
+        <button class="tab" onclick="et('prekovremeni')">Prekovremeni sati</button>
+      </div>
+      <div id="etabo">
+        <div class="sr" id="empst"></div>
+        <div class="toolbar"><button class="btn btn-dark" onclick="openAM()">+ Novo odsustvo</button></div>
+        <div class="tc"><div class="tw"><table>
+          <thead><tr><th onclick="se('tip')">Vrsta ↕</th><th onclick="se('od')">Od ↕</th><th onclick="se('do')">Do ↕</th><th onclick="se('dana')">Dana ↕</th><th onclick="se('status')">Status ↕</th><th>Napomena</th><th></th></tr></thead>
+          <tbody id="emptb"></tbody>
+        </table></div></div>
+      </div>
+      <div id="etabl" style="display:none">
+        <div class="sr" id="ovst"></div>
+        <div class="toolbar"><button class="btn btn-dark" onclick="openOVM()">+ Novi unos</button></div>
+        <div class="tc"><div class="tw"><table>
+          <thead><tr><th onclick="sov('datum')">Datum ↕</th><th onclick="sov('sati')">Sati ↕</th><th>Napomena</th><th></th></tr></thead>
+          <tbody id="ovtb"></tbody>
+        </table></div></div>
+      </div>
+    </div>
+
+    <!-- ADMIN VIEW -->
+    <div id="admv" style="display:none">
+      <div class="ph"><h2>Admin panel</h2><p>Upravljanje nalozima i evidencija</p></div>
+      <div class="tabs">
+        <button class="tab active" onclick="at('odsustva')">Odsustva</button>
+        <button class="tab" onclick="at('prekovremeni')">Prekovremeni</button>
+        <button class="tab" onclick="at('nalozi')">Nalozi</button>
+      </div>
+      <div id="tabo">
+        <div class="sr" id="admst"></div>
+        <div class="toolbar">
+          <input type="text" id="aq" placeholder="Pretraži..." oninput="renderA()">
+          <select id="atip" onchange="renderA()"><option value="">Sve vrste</option><option>Bolovanje</option><option>Slobodan dan</option><option>Godišnji odmor</option><option>Prekovremeni</option><option>Plaćeno odsustvo</option><option>Neplaćeno odsustvo</option><option>Rad od kuće</option><option>Slava</option></select>
+          <select id="ast" onchange="renderA()"><option value="">Svi statusi</option><option>Odobreno</option><option>Na čekanju</option><option>Odbijeno</option></select>
+          <button class="btn" onclick="expCSV()">↓ CSV</button>
+        </div>
+        <div class="tc"><div class="tw"><table>
+          <thead><tr><th onclick="sa('ime')">Zaposleni ↕</th><th onclick="sa('odeljenje')">Odeljenje ↕</th><th onclick="sa('tip')">Vrsta ↕</th><th onclick="sa('od')">Od ↕</th><th onclick="sa('do')">Do ↕</th><th onclick="sa('dana')">Dana ↕</th><th onclick="sa('status')">Status ↕</th><th>Napomena</th><th>Akcije</th></tr></thead>
+          <tbody id="admtb"></tbody>
+        </table></div></div>
+      </div>
+      <div id="tabov" style="display:none">
+        <div class="sr" id="admovst"></div>
+        <div class="toolbar"><input type="text" id="ovq" placeholder="Pretraži..." oninput="renderAOV()"></div>
+        <div class="tc"><div class="tw"><table>
+          <thead><tr><th onclick="saov('ime')">Zaposleni ↕</th><th onclick="saov('odeljenje')">Odeljenje ↕</th><th onclick="saov('datum')">Datum ↕</th><th onclick="saov('sati')">Sati ↕</th><th>Napomena</th><th></th></tr></thead>
+          <tbody id="admovtb"></tbody>
+        </table></div></div>
+      </div>
+      <div id="tabn" style="display:none">
+        <div class="toolbar"><button class="btn btn-dark" onclick="openNA()">+ Novi nalog</button></div>
+        <div class="ag" id="accg"></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Profile modal -->
+<div class="overlay" id="profm" style="align-items:flex-start;padding:1.5rem 1rem;">
+  <div class="modal" style="max-width:640px;width:100%;margin:auto;">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:1.25rem">
+      <div class="aav" id="prof-av" style="width:44px;height:44px;font-size:15px;flex-shrink:0"></div>
+      <div style="flex:1"><div style="font-size:16px;font-weight:500" id="prof-name"></div><div style="font-size:12px;color:var(--text2)" id="prof-dept"></div></div>
+      <button class="btn btn-sm" onclick="cm('profm')">Zatvori</button>
+    </div>
+    <div id="prof-stats" class="sr" style="margin-bottom:1.25rem"></div>
+    <div class="tabs" style="margin-bottom:1rem">
+      <button class="tab active" id="prof-t1" onclick="profTab('odsustva')">Odsustva</button>
+      <button class="tab" id="prof-t2" onclick="profTab('prekovremeni')">Prekovremeni</button>
+    </div>
+    <div id="prof-abs-wrap"><div class="tc"><div class="tw"><table style="min-width:360px">
+      <thead><tr><th>Vrsta</th><th>Od</th><th>Do</th><th>Dana</th><th>Status</th><th>Napomena</th><th></th></tr></thead>
+      <tbody id="prof-abs-tb"></tbody>
+    </table></div></div></div>
+    <div id="prof-ov-wrap" style="display:none"><div class="tc"><div class="tw"><table style="min-width:360px">
+      <thead><tr><th>Datum</th><th>Sati</th><th>Napomena</th><th></th></tr></thead>
+      <tbody id="prof-ov-tb"></tbody>
+    </table></div></div></div>
+  </div>
+</div>
+
+<!-- Absence modal -->
+<div class="overlay" id="abm">
+  <div class="modal">
+    <h3 id="amtitle">Novo odsustvo</h3>
+    <div class="fg"><label>Vrsta odsustva</label>
+      <select id="ftip"><option>Bolovanje</option><option>Slobodan dan</option><option>Godišnji odmor</option><option>Prekovremeni</option><option>Plaćeno odsustvo</option><option>Neplaćeno odsustvo</option><option>Rad od kuće</option><option>Slava</option></select>
+    </div>
+    <div class="fr2">
+      <div class="fg"><label>Od datuma</label><input type="date" id="fod"></div>
+      <div class="fg"><label>Do datuma</label><input type="date" id="fdo"></div>
+    </div>
+    <div class="fg"><label>Napomena (opciono)</label><textarea id="fnap" placeholder="Razlog, detalji..."></textarea></div>
+    <div id="aberr" class="ebox">Popunite oba datuma.</div>
+    <div class="ma"><button class="btn" onclick="cm('abm')">Otkaži</button><button class="btn btn-dark" onclick="saveAb()">Sačuvaj</button></div>
+  </div>
+</div>
+
+<!-- Status modal -->
+<div class="overlay" id="stm">
+  <div class="modal">
+    <h3>Promeni status</h3>
+    <p style="font-size:13px;color:var(--text2);margin-bottom:1.25rem" id="stdesc"></p>
+    <div class="fg"><label>Status</label><select id="stval"><option>Odobreno</option><option>Na čekanju</option><option>Odbijeno</option></select></div>
+    <div class="fg"><label>Komentar (opciono)</label><textarea id="stkom" placeholder="Poruka zaposlenom..."></textarea></div>
+    <div class="ma"><button class="btn" onclick="cm('stm')">Otkaži</button><button class="btn btn-dark" onclick="saveSt()">Sačuvaj</button></div>
+  </div>
+</div>
+
+<!-- Overtime modal -->
+<div class="overlay" id="ovm">
+  <div class="modal">
+    <h3 id="ovmtitle">Novi prekovremeni unos</h3>
+    <div class="fg"><label>Datum</label><input type="date" id="ovdat"></div>
+    <div class="fg"><label>Broj sati</label><input type="number" id="ovsati" min="0.5" max="24" step="0.5" placeholder="npr. 2.5"></div>
+    <div class="fg"><label>Napomena (opciono)</label><textarea id="ovnap" placeholder="Opis posla, projekat..."></textarea></div>
+    <div id="overr" class="ebox">Popunite datum i broj sati.</div>
+    <div class="ma"><button class="btn" onclick="cm('ovm')">Otkaži</button><button class="btn btn-dark" onclick="saveOV()">Sačuvaj</button></div>
+  </div>
+</div>
+
+<!-- Account modal -->
+<div class="overlay" id="acm">
+  <div class="modal">
+    <h3 id="acmtitle">Novi nalog</h3>
+    <div class="fg"><label>Ime i prezime</label><input type="text" id="aime" placeholder="npr. Jovana Marković"></div>
+    <div class="fg"><label>Odeljenje</label>
+      <select id="adept"><option>Računovodstvo</option><option>HR</option><option>IT</option><option>Marketing</option><option>Prodaja</option><option>Logistika</option><option>Menadžment</option></select>
+    </div>
+    <div class="fg"><label>Korisničko ime</label><input type="text" id="aun" placeholder="npr. jovana.markovic"><p class="hint">Bez razmaka, koristi se za prijavu</p></div>
+    <div class="fg"><label>Lozinka</label>
+      <div class="pr"><input type="password" id="apw" placeholder="••••••••"><button type="button" onclick="tp('apw',this)">👁</button></div>
+      <p class="hint" id="apwhint">Minimalno 4 karaktera</p>
+    </div>
+    <div id="acerr" class="ebox">Popunite sva polja.</div>
+    <div class="ma"><button class="btn" onclick="cm('acm')">Otkaži</button><button class="btn btn-dark" onclick="saveAcc()">Sačuvaj</button></div>
+  </div>
+</div>
+
+<!-- Password modal -->
+<div class="overlay" id="pwm">
+  <div class="modal">
+    <h3>Promeni lozinku</h3>
+    <p style="font-size:13px;color:var(--text2);margin-bottom:1.25rem" id="pwdesc"></p>
+    <div class="fg"><label>Nova lozinka</label>
+      <div class="pr"><input type="password" id="pwnew" placeholder="••••••••"><button type="button" onclick="tp('pwnew',this)">👁</button></div>
+    </div>
+    <div id="pwerr" class="ebox">Unesite lozinku (min. 4 karaktera).</div>
+    <div class="ma"><button class="btn" onclick="cm('pwm')">Otkaži</button><button class="btn btn-dark" onclick="savePw()">Sačuvaj</button></div>
+  </div>
+</div>
+
+<!-- Admin entry modal -->
+<div class="overlay" id="admem">
+  <div class="modal">
+    <h3 id="admem-title">Unesi u ime zaposlenog</h3>
+    <p style="font-size:12px;color:var(--text2);margin-bottom:1rem" id="admem-who"></p>
+    <div class="tabs" style="margin-bottom:1.25rem">
+      <button class="tab active" id="admem-t1" onclick="admemTab('odsustvo')">Odsustvo</button>
+      <button class="tab" id="admem-t2" onclick="admemTab('prekovremeni')">Prekovremeni sati</button>
+    </div>
+    <div id="admem-abs">
+      <div class="fg"><label>Vrsta odsustva</label>
+        <select id="admem-tip"><option>Bolovanje</option><option>Slobodan dan</option><option>Godišnji odmor</option><option>Prekovremeni</option><option>Plaćeno odsustvo</option><option>Neplaćeno odsustvo</option><option>Rad od kuće</option><option>Slava</option></select>
+      </div>
+      <div class="fr2">
+        <div class="fg"><label>Od datuma</label><input type="date" id="admem-od"></div>
+        <div class="fg"><label>Do datuma</label><input type="date" id="admem-do"></div>
+      </div>
+      <div class="fg"><label>Status</label><select id="admem-st"><option>Odobreno</option><option>Na čekanju</option><option>Odbijeno</option></select></div>
+      <div class="fg"><label>Napomena (opciono)</label><textarea id="admem-nap"></textarea></div>
+    </div>
+    <div id="admem-ov" style="display:none">
+      <div class="fg"><label>Datum</label><input type="date" id="admem-ovdat"></div>
+      <div class="fg"><label>Broj sati</label><input type="number" id="admem-ovsati" min="0.5" max="24" step="0.5" placeholder="npr. 2.5"></div>
+      <div class="fg"><label>Napomena (opciono)</label><textarea id="admem-ovnap"></textarea></div>
+    </div>
+    <div id="admem-err" class="ebox">Popunite sva obavezna polja.</div>
+    <div class="ma"><button class="btn" onclick="cm('admem')">Otkaži</button><button class="btn btn-dark" onclick="saveAdmEntry()">Sačuvaj</button></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ── SUPABASE CONFIG ────────────────────────────────────────────────
+const SB_URL = 'https://vhngsjrjgmjxzlvnmjza.supabase.co';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZobmdzanJqZ21qeHpsdm5tanphIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM3NTM3ODUsImV4cCI6MjA4OTMyOTc4NX0.CkspA52SpFhRo6_J1qac8Lb7o-okDsGD-GqZQXE4gNc';
+
+async function sb(table, method='GET', body=null, query=''){
+  const url = `${SB_URL}/rest/v1/${table}${query}`;
+  const headers = {'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Content-Type':'application/json','Prefer':'return=representation'};
+  const res = await fetch(url,{method,headers,body:body?JSON.stringify(body):null});
+  if(!res.ok){const e=await res.text();throw new Error(e);}
+  const txt=await res.text();
+  return txt?JSON.parse(txt):[];
+}
+const dbGet  = (t,q='')        => sb(t,'GET',null,q);
+const dbPost = (t,b)           => sb(t,'POST',b);
+const dbPatch= (t,q,b)        => sb(t,'PATCH',b,q);
+const dbDel  = (t,q)          => sb(t,'DELETE',null,q);
+
+// ── HELPERS ────────────────────────────────────────────────────────
+function days(a,b){if(!a||!b)return 0;let c=0,cur=new Date(a+'T09:00:00'),end=new Date(b+'T17:00:00');while(cur<=end){const d=cur.getDay();if(d>=1&&d<=5)c++;cur.setDate(cur.getDate()+1);}return c;}
+function fmt(d){if(!d)return'';const[y,m,dd]=d.split('-');return`${dd}.${m}.${y}`}
+function ini(n){return(n||'?').split(' ').map(w=>w[0]||'').join('').toUpperCase().slice(0,2)}
+function tc(t){return{'Bolovanje':'b-bolovanje','Slobodan dan':'b-slobodan','Godišnji odmor':'b-godišnji','Prekovremeni':'b-prekovremeni','Plaćeno odsustvo':'b-placeno','Neplaćeno odsustvo':'b-neplaceno','Rad od kuće':'b-radodkuce','Slava':'b-slava'}[t]||'b-slobodan'}
+function sc(s){return{'Odobreno':'b-odobreno','Na čekanju':'b-cekanju','Odbijeno':'b-odbijeno'}[s]||'b-cekanju'}
+function tp(id,btn){const el=document.getElementById(id);el.type=el.type==='password'?'text':'password';btn.textContent=el.type==='password'?'👁':'🙈'}
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
+function loading(tbId,cols){document.getElementById(tbId).innerHTML=`<tr><td colspan="${cols}"><div class="loading"><div class="spin"></div>Učitavanje...</div></td></tr>`;}
+function cm(id){document.getElementById(id).classList.remove('open');}
+document.querySelectorAll('.overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open');}));
+
+// ── SESSION ────────────────────────────────────────────────────────
+let CU=null;
+
+async function doLogin(){
+  const u=document.getElementById('lu').value.trim().toLowerCase();
+  const p=document.getElementById('lp').value;
+  const btn=document.getElementById('loginbtn');
+  const err=document.getElementById('lerr');
+  if(!u||!p){err.style.display='block';err.textContent='Unesite korisničko ime i lozinku.';return;}
+  btn.textContent='Prijava...';btn.disabled=true;
+  try{
+    const users=await dbGet('users',`?username=eq.${encodeURIComponent(u)}&password=eq.${encodeURIComponent(p)}&select=*`);
+    if(!users.length){err.style.display='block';err.textContent='Pogrešno korisničko ime ili lozinka.';return;}
+    err.style.display='none';CU=users[0];showApp();
+  }catch(e){err.style.display='block';err.textContent='Greška pri prijavi: '+e.message;}
+  finally{btn.textContent='Prijavite se';btn.disabled=false;}
+}
+['lu','lp'].forEach(id=>document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')doLogin()}));
+
+function doLogout(){CU=null;document.getElementById('app').style.display='none';document.getElementById('ls').style.display='flex';document.getElementById('lp').value='';}
+
+function showApp(){
+  document.getElementById('ls').style.display='none';document.getElementById('app').style.display='block';
+  document.getElementById('topnm').textContent=CU.name;document.getElementById('topav').textContent=ini(CU.name);
+  document.getElementById('troled').textContent=CU.role==='admin'?'Administrator':CU.dept;
+  if(CU.role==='admin'){document.getElementById('empv').style.display='none';document.getElementById('admv').style.display='block';document.getElementById('btnmypw').style.display='inline-flex';renderA();renderAccG();}
+  else{document.getElementById('empv').style.display='block';document.getElementById('admv').style.display='none';document.getElementById('btnmypw').style.display='none';renderE();}
+}
+
+// ── EMPLOYEE ABSENCES ──────────────────────────────────────────────
+let seC='od',seD=-1,allMyAbs=[];
+async function renderE(){
+  loading('emptb',7);
+  try{
+    allMyAbs=await dbGet('absences',`?user_id=eq.${CU.id}&order=od.desc`);
+    document.getElementById('empst').innerHTML=`
+      <div class="sc"><div class="sl">Ukupno</div><div class="sv">${allMyAbs.length}</div></div>
+      <div class="sc"><div class="sl">Na čekanju</div><div class="sv">${allMyAbs.filter(x=>x.status==='Na čekanju').length}</div></div>
+      <div class="sc"><div class="sl">Odobreno</div><div class="sv">${allMyAbs.filter(x=>x.status==='Odobreno').length}</div></div>
+      <div class="sc"><div class="sl">Dana ukupno</div><div class="sv">${allMyAbs.reduce((s,x)=>s+days(x.od,x.do),0)}</div></div>`;
+    const data=[...allMyAbs].sort((a,b)=>{let av=a[seC]||'',bv=b[seC]||'';if(seC==='dana'){av=days(a.od,a.do);bv=days(b.od,b.do);}return av<bv?seD:av>bv?-seD:0;});
+    const tb=document.getElementById('emptb');
+    if(!data.length){tb.innerHTML='<tr><td colspan="7"><div class="es">Nema evidentiranih odsustva.</div></td></tr>';return;}
+    tb.innerHTML=data.map(a=>`<tr>
+      <td><span class="badge ${tc(a.tip)}">${a.tip}</span></td>
+      <td>${fmt(a.od)}</td><td>${fmt(a.do)}</td>
+      <td style="font-family:'DM Mono',monospace">${days(a.od,a.do)}</td>
+      <td><span class="badge ${sc(a.status)}">${a.status}</span></td>
+      <td style="font-size:12px;color:var(--text2)">${a.napomena||'—'}${a.komentar?`<br><span style="color:#2e7d32;font-style:italic">↳ ${a.komentar}</span>`:''}</td>
+      <td style="white-space:nowrap">${a.status==='Na čekanju'?`<button class="btn btn-sm" onclick="eAbs('${a.id}')">Uredi</button> <button class="btn btn-sm btn-danger" onclick="dAbs('${a.id}')">Briši</button>`:''}</td>
+    </tr>`).join('');
+  }catch(e){document.getElementById('emptb').innerHTML=`<tr><td colspan="7"><div class="es">Greška: ${e.message}</div></td></tr>`;}
+}
+function se(c){if(seC===c)seD*=-1;else{seC=c;seD=1;}renderE();}
+function et(t){
+  document.getElementById('etabo').style.display=t==='odsustva'?'block':'none';
+  document.getElementById('etabl').style.display=t==='prekovremeni'?'block':'none';
+  document.querySelectorAll('#empv .tab').forEach((x,i)=>x.classList.toggle('active',['odsustva','prekovremeni'][i]===t));
+  if(t==='prekovremeni')renderOV();
+}
+
+let eAbId=null;
+function openAM(id){
+  eAbId=id||null;
+  document.getElementById('amtitle').textContent=id?'Uredi odsustvo':'Novo odsustvo';
+  document.getElementById('aberr').style.display='none';
+  if(id){const a=allMyAbs.find(x=>x.id===id);document.getElementById('ftip').value=a.tip;document.getElementById('fod').value=a.od;document.getElementById('fdo').value=a.do;document.getElementById('fnap').value=a.napomena||'';}
+  else{document.getElementById('fod').value='';document.getElementById('fdo').value='';document.getElementById('fnap').value='';document.getElementById('ftip').value='Slobodan dan';}
+  document.getElementById('abm').classList.add('open');
+}
+function eAbs(id){openAM(id);}
+async function saveAb(){
+  const od=document.getElementById('fod').value,doo=document.getElementById('fdo').value;
+  if(!od||!doo){document.getElementById('aberr').style.display='block';return;}
+  const body={user_id:CU.id,ime:CU.name,odeljenje:CU.dept,tip:document.getElementById('ftip').value,od,do:doo,napomena:document.getElementById('fnap').value.trim(),komentar:''};
+  try{
+    if(eAbId){await dbPatch('absences',`?id=eq.${eAbId}`,{tip:body.tip,od,do:doo,napomena:body.napomena});}
+    else{body.status='Na čekanju';await dbPost('absences',body);}
+    cm('abm');toast('Sačuvano!');renderE();
+  }catch(e){document.getElementById('aberr').textContent='Greška: '+e.message;document.getElementById('aberr').style.display='block';}
+}
+async function dAbs(id){
+  if(!confirm('Obrisati zahtev?'))return;
+  await dbDel('absences',`?id=eq.${id}`);
+  toast('Obrisano.');renderE();
+}
+
+// ── EMPLOYEE OVERTIME ──────────────────────────────────────────────
+let sovC='datum',sovD=-1,eOvId=null,allMyOV=[];
+async function renderOV(){
+  loading('ovtb',4);
+  try{
+    allMyOV=await dbGet('overtime',`?user_id=eq.${CU.id}&order=datum.desc`);
+    const total=allMyOV.reduce((s,o)=>s+Number(o.sati),0);
+    const mesec=new Date().toISOString().slice(0,7);
+    document.getElementById('ovst').innerHTML=`
+      <div class="sc"><div class="sl">Ukupno unosa</div><div class="sv">${allMyOV.length}</div></div>
+      <div class="sc"><div class="sl">Ukupno sati</div><div class="sv">${total}</div></div>
+      <div class="sc"><div class="sl">Ovaj mesec</div><div class="sv">${allMyOV.filter(o=>o.datum&&o.datum.slice(0,7)===mesec).reduce((s,o)=>s+Number(o.sati),0)}</div></div>`;
+    const data=[...allMyOV].sort((a,b)=>{let av=a[sovC]||'',bv=b[sovC]||'';if(sovC==='sati'){av=Number(a.sati);bv=Number(b.sati);}return av<bv?sovD:av>bv?-sovD:0;});
+    const tb=document.getElementById('ovtb');
+    if(!data.length){tb.innerHTML='<tr><td colspan="4"><div class="es">Nema unetih prekovremenih sati.</div></td></tr>';return;}
+    tb.innerHTML=data.map(o=>`<tr>
+      <td>${fmt(o.datum)}</td>
+      <td style="font-family:'DM Mono',monospace;font-weight:500">${o.sati}h</td>
+      <td style="font-size:12px;color:var(--text2)">${o.napomena||'—'}</td>
+      <td style="white-space:nowrap"><button class="btn btn-sm" onclick="eOV('${o.id}')">Uredi</button> <button class="btn btn-sm btn-danger" onclick="dOV('${o.id}')">Briši</button></td>
+    </tr>`).join('');
+  }catch(e){document.getElementById('ovtb').innerHTML=`<tr><td colspan="4"><div class="es">Greška: ${e.message}</div></td></tr>`;}
+}
+function sov(c){if(sovC===c)sovD*=-1;else{sovC=c;sovD=1;}renderOV();}
+function openOVM(id){
+  eOvId=id||null;
+  document.getElementById('ovmtitle').textContent=id?'Uredi unos':'Novi prekovremeni unos';
+  document.getElementById('overr').style.display='none';
+  if(id){const o=allMyOV.find(x=>x.id===id);document.getElementById('ovdat').value=o.datum;document.getElementById('ovsati').value=o.sati;document.getElementById('ovnap').value=o.napomena||'';}
+  else{document.getElementById('ovdat').value='';document.getElementById('ovsati').value='';document.getElementById('ovnap').value='';}
+  document.getElementById('ovm').classList.add('open');
+}
+function eOV(id){openOVM(id);}
+async function saveOV(){
+  const dat=document.getElementById('ovdat').value,sati=parseFloat(document.getElementById('ovsati').value);
+  if(!dat||!sati||sati<=0){document.getElementById('overr').style.display='block';return;}
+  const body={user_id:CU.id,ime:CU.name,odeljenje:CU.dept,datum:dat,sati,napomena:document.getElementById('ovnap').value.trim()};
+  try{
+    if(eOvId){await dbPatch('overtime',`?id=eq.${eOvId}`,{datum:dat,sati,napomena:body.napomena});}
+    else{await dbPost('overtime',body);}
+    cm('ovm');toast('Sačuvano!');renderOV();
+  }catch(e){document.getElementById('overr').textContent='Greška: '+e.message;document.getElementById('overr').style.display='block';}
+}
+async function dOV(id){
+  if(!confirm('Obrisati unos?'))return;
+  await dbDel('overtime',`?id=eq.${id}`);
+  toast('Obrisano.');renderOV();
+}
+
+// ── ADMIN ABSENCES ─────────────────────────────────────────────────
+let saC='od',saD=-1,stId=null,allAdmAbs=[];
+async function renderA(){
+  loading('admtb',9);
+  try{
+    allAdmAbs=await dbGet('absences','?order=od.desc');
+    const all=allAdmAbs;
+    document.getElementById('admst').innerHTML=`
+      <div class="sc"><div class="sl">Svi zahtevi</div><div class="sv">${all.length}</div></div>
+      <div class="sc"><div class="sl">Na čekanju</div><div class="sv">${all.filter(x=>x.status==='Na čekanju').length}</div></div>
+      <div class="sc"><div class="sl">Odobreno</div><div class="sv">${all.filter(x=>x.status==='Odobreno').length}</div></div>
+      <div class="sc"><div class="sl">Odbijeno</div><div class="sv">${all.filter(x=>x.status==='Odbijeno').length}</div></div>
+      <div class="sc"><div class="sl">Ukupno dana</div><div class="sv">${all.reduce((s,x)=>s+days(x.od,x.do),0)}</div></div>`;
+    renderAFiltered();
+  }catch(e){document.getElementById('admtb').innerHTML=`<tr><td colspan="9"><div class="es">Greška: ${e.message}</div></td></tr>`;}
+}
+function renderAFiltered(){
+  const q=(document.getElementById('aq').value||'').toLowerCase();
+  const ft=document.getElementById('atip').value,fs=document.getElementById('ast').value;
+  let flt=allAdmAbs.filter(a=>(!q||a.ime.toLowerCase().includes(q)||a.odeljenje.toLowerCase().includes(q))&&(!ft||a.tip===ft)&&(!fs||a.status===fs));
+  flt=[...flt].sort((a,b)=>{let av=a[saC]||'',bv=b[saC]||'';if(saC==='dana'){av=days(a.od,a.do);bv=days(b.od,b.do);}return av<bv?saD:av>bv?-saD:0;});
+  const tb=document.getElementById('admtb');
+  if(!flt.length){tb.innerHTML='<tr><td colspan="9"><div class="es">Nema rezultata</div></td></tr>';return;}
+  tb.innerHTML=flt.map(a=>`<tr>
+    <td style="font-weight:500">${a.ime}</td><td style="color:var(--text2)">${a.odeljenje}</td>
+    <td><span class="badge ${tc(a.tip)}">${a.tip}</span></td>
+    <td>${fmt(a.od)}</td><td>${fmt(a.do)}</td>
+    <td style="font-family:'DM Mono',monospace">${days(a.od,a.do)}</td>
+    <td><span class="badge ${sc(a.status)}">${a.status}</span></td>
+    <td style="font-size:12px;color:var(--text2)">${a.napomena||'—'}${a.komentar?`<br><em>${a.komentar}</em>`:''}</td>
+    <td style="white-space:nowrap"><button class="btn btn-sm" onclick="oSt('${a.id}')">Status</button> <button class="btn btn-sm btn-danger" onclick="aDel('${a.id}')">Briši</button></td>
+  </tr>`).join('');
+}
+document.getElementById('aq').addEventListener('input',renderAFiltered);
+document.getElementById('atip').addEventListener('change',renderAFiltered);
+document.getElementById('ast').addEventListener('change',renderAFiltered);
+function sa(c){if(saC===c)saD*=-1;else{saC=c;saD=1;}renderAFiltered();}
+function oSt(id){
+  stId=id;const a=allAdmAbs.find(x=>x.id===id);
+  document.getElementById('stdesc').textContent=`${a.ime} — ${a.tip} (${fmt(a.od)} → ${fmt(a.do)})`;
+  document.getElementById('stval').value=a.status;document.getElementById('stkom').value=a.komentar||'';
+  document.getElementById('stm').classList.add('open');
+}
+async function saveSt(){
+  try{
+    await dbPatch('absences',`?id=eq.${stId}`,{status:document.getElementById('stval').value,komentar:document.getElementById('stkom').value.trim()});
+    cm('stm');toast('Status promenjen!');renderA();
+  }catch(e){alert('Greška: '+e.message);}
+}
+async function aDel(id){
+  if(!confirm('Obrisati evidenciju?'))return;
+  await dbDel('absences',`?id=eq.${id}`);
+  toast('Obrisano.');renderA();
+}
+function at(t){
+  ['tabo','tabov','tabn'].forEach((id,i)=>document.getElementById(id).style.display=(['odsustva','prekovremeni','nalozi'][i]===t)?'block':'none');
+  document.querySelectorAll('#admv .tab').forEach((x,i)=>x.classList.toggle('active',['odsustva','prekovremeni','nalozi'][i]===t));
+  if(t==='prekovremeni')renderAOV();
+  if(t==='nalozi')renderAccG();
+}
+
+// ── ADMIN OVERTIME ─────────────────────────────────────────────────
+let saovC='datum',saovD=-1,allAdmOV=[];
+async function renderAOV(){
+  loading('admovtb',6);
+  try{
+    allAdmOV=await dbGet('overtime','?order=datum.desc');
+    const mesec=new Date().toISOString().slice(0,7);
+    document.getElementById('admovst').innerHTML=`
+      <div class="sc"><div class="sl">Ukupno unosa</div><div class="sv">${allAdmOV.length}</div></div>
+      <div class="sc"><div class="sl">Ukupno sati</div><div class="sv">${allAdmOV.reduce((s,o)=>s+Number(o.sati),0)}</div></div>
+      <div class="sc"><div class="sl">Ovaj mesec</div><div class="sv">${allAdmOV.filter(o=>o.datum&&o.datum.slice(0,7)===mesec).reduce((s,o)=>s+Number(o.sati),0)}</div></div>`;
+    const q=(document.getElementById('ovq').value||'').toLowerCase();
+    let flt=allAdmOV.filter(o=>!q||o.ime.toLowerCase().includes(q)||o.odeljenje.toLowerCase().includes(q));
+    flt=[...flt].sort((a,b)=>{let av=a[saovC]||'',bv=b[saovC]||'';if(saovC==='sati'){av=Number(a.sati);bv=Number(b.sati);}return av<bv?saovD:av>bv?-saovD:0;});
+    const tb=document.getElementById('admovtb');
+    if(!flt.length){tb.innerHTML='<tr><td colspan="6"><div class="es">Nema rezultata</div></td></tr>';return;}
+    tb.innerHTML=flt.map(o=>`<tr>
+      <td style="font-weight:500">${o.ime}</td><td style="color:var(--text2)">${o.odeljenje}</td>
+      <td>${fmt(o.datum)}</td><td style="font-family:'DM Mono',monospace;font-weight:500">${o.sati}h</td>
+      <td style="font-size:12px;color:var(--text2)">${o.napomena||'—'}</td>
+      <td><button class="btn btn-sm btn-danger" onclick="aDelOV('${o.id}')">Briši</button></td>
+    </tr>`).join('');
+  }catch(e){document.getElementById('admovtb').innerHTML=`<tr><td colspan="6"><div class="es">Greška: ${e.message}</div></td></tr>`;}
+}
+function saov(c){if(saovC===c)saovD*=-1;else{saovC=c;saovD=1;}renderAOV();}
+async function aDelOV(id){if(!confirm('Obrisati unos?'))return;await dbDel('overtime',`?id=eq.${id}`);toast('Obrisano.');renderAOV();}
+
+// ── ACCOUNTS ───────────────────────────────────────────────────────
+let eAccId=null,allUsers=[];
+async function renderAccG(){
+  const g=document.getElementById('accg');
+  g.innerHTML='<div class="loading"><div class="spin"></div>Učitavanje...</div>';
+  try{
+    allUsers=await dbGet('users','?role=eq.employee&order=name.asc');
+    const allAbs=await dbGet('absences','?select=user_id,status');
+    if(!allUsers.length){g.innerHTML='<p style="color:var(--text3);font-size:13px;padding:1rem 0">Nema kreiranih naloga.</p>';return;}
+    g.innerHTML=allUsers.map(u=>{
+      const ua=allAbs.filter(a=>a.user_id===u.id),pn=ua.filter(a=>a.status==='Na čekanju').length;
+      return`<div class="acard">
+        <div class="act" style="cursor:pointer" onclick="oProfile('${u.id}')" title="Klikni za pregled">
+          <div class="aav">${ini(u.name)}</div>
+          <div style="flex:1"><div class="an" style="text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--border2)">${u.name}</div><div class="ad">${u.dept}</div></div>
+          <span style="font-size:11px;color:var(--text3)">Pregled →</span>
+        </div>
+        <div class="am">korisničko ime: <strong>${u.username}</strong><br>zahtevi: ${ua.length} ukupno${pn?` · <span style="color:#f57f17">${pn} na čekanju</span>`:''}</div>
+        <div class="aac">
+          <button class="btn btn-sm" onclick="oEA('${u.id}')">Uredi</button>
+          <button class="btn btn-sm btn-warn" onclick="oPW('${u.id}')">Lozinka</button>
+          <button class="btn btn-sm" style="border-color:#7986cb;color:#283593" onclick="oAdmEntry('${u.id}')">+ Unesi</button>
+          <button class="btn btn-sm btn-danger" onclick="dAcc('${u.id}')">Briši</button>
+        </div>
+      </div>`;
+    }).join('');
+  }catch(e){g.innerHTML=`<p style="color:#c62828;font-size:13px">Greška: ${e.message}</p>`;}
+}
+function openNA(){
+  eAccId=null;document.getElementById('acmtitle').textContent='Novi nalog';
+  document.getElementById('aime').value='';document.getElementById('aun').value='';document.getElementById('apw').value='';
+  document.getElementById('apw').placeholder='••••••••';document.getElementById('apwhint').textContent='Minimalno 4 karaktera';
+  document.getElementById('acerr').style.display='none';document.getElementById('acm').classList.add('open');
+}
+function oEA(id){
+  eAccId=id;const u=allUsers.find(x=>x.id===id);
+  document.getElementById('acmtitle').textContent='Uredi nalog';document.getElementById('aime').value=u.name;
+  document.getElementById('adept').value=u.dept;document.getElementById('aun').value=u.username;
+  document.getElementById('apw').value='';document.getElementById('apw').placeholder='Ostavite prazno = ne menjati';
+  document.getElementById('apwhint').textContent='Ostavite prazno ako ne menjate lozinku';
+  document.getElementById('acerr').style.display='none';document.getElementById('acm').classList.add('open');
+}
+async function saveAcc(){
+  const name=document.getElementById('aime').value.trim();
+  const uname=document.getElementById('aun').value.trim().toLowerCase().replace(/\s/g,'');
+  const pw=document.getElementById('apw').value;
+  const err=document.getElementById('acerr');
+  if(!name||!uname){err.textContent='Unesite ime i korisničko ime.';err.style.display='block';return;}
+  try{
+    if(eAccId){
+      const body={name,dept:document.getElementById('adept').value,username:uname};
+      if(pw){if(pw.length<4){err.textContent='Min. 4 karaktera.';err.style.display='block';return;}body.password=pw;}
+      await dbPatch('users',`?id=eq.${eAccId}`,body);
+      await dbPatch('absences',`?user_id=eq.${eAccId}`,{ime:name,odeljenje:document.getElementById('adept').value});
+      await dbPatch('overtime',`?user_id=eq.${eAccId}`,{ime:name,odeljenje:document.getElementById('adept').value});
+    }else{
+      if(!pw||pw.length<4){err.textContent='Unesite lozinku (min. 4).';err.style.display='block';return;}
+      await dbPost('users',{name,dept:document.getElementById('adept').value,username:uname,password:pw,role:'employee'});
+    }
+    cm('acm');toast('Sačuvano!');renderAccG();
+  }catch(e){err.textContent='Greška: '+e.message;err.style.display='block';}
+}
+let pwAccId=null;
+function oPW(id){pwAccId=id;const u=allUsers.find(x=>x.id===id);document.getElementById('pwdesc').textContent=`Promena lozinke za: ${u.name} (${u.username})`;document.getElementById('pwnew').value='';document.getElementById('pwerr').style.display='none';document.getElementById('pwm').classList.add('open');}
+function oMyPW(){pwAccId=CU.id;document.getElementById('pwdesc').textContent=`Promena vaše admin lozinke (${CU.username})`;document.getElementById('pwnew').value='';document.getElementById('pwerr').style.display='none';document.getElementById('pwm').classList.add('open');}
+async function savePw(){
+  const pw=document.getElementById('pwnew').value;
+  if(!pw||pw.length<4){document.getElementById('pwerr').style.display='block';return;}
+  try{await dbPatch('users',`?id=eq.${pwAccId}`,{password:pw});cm('pwm');toast('Lozinka promenjena!');}
+  catch(e){alert('Greška: '+e.message);}
+}
+async function dAcc(id){
+  const u=allUsers.find(x=>x.id===id);
+  if(!confirm(`Obrisati nalog "${u.name}"? Svi podaci će biti obrisani.`))return;
+  await dbDel('absences',`?user_id=eq.${id}`);
+  await dbDel('overtime',`?user_id=eq.${id}`);
+  await dbDel('users',`?id=eq.${id}`);
+  toast('Nalog obrisan.');renderAccG();
+}
+
+// ── PROFILE VIEW ───────────────────────────────────────────────────
+let profUserId=null,profAbs=[],profOV=[];
+async function oProfile(userId){
+  profUserId=userId;
+  const u=allUsers.find(x=>x.id===userId);
+  document.getElementById('prof-av').textContent=ini(u.name);
+  document.getElementById('prof-name').textContent=u.name;
+  document.getElementById('prof-dept').textContent=u.dept+' · '+u.username;
+  document.getElementById('profm').classList.add('open');
+  profTab('odsustva');
+}
+async function profTab(t){
+  document.getElementById('prof-abs-wrap').style.display=t==='odsustva'?'block':'none';
+  document.getElementById('prof-ov-wrap').style.display=t==='prekovremeni'?'block':'none';
+  document.getElementById('prof-t1').classList.toggle('active',t==='odsustva');
+  document.getElementById('prof-t2').classList.toggle('active',t==='prekovremeni');
+  if(t==='odsustva'){
+    loading('prof-abs-tb',7);
+    try{
+      profAbs=await dbGet('absences',`?user_id=eq.${profUserId}&order=od.desc`);
+      profOV=await dbGet('overtime',`?user_id=eq.${profUserId}`);
+      const totalDana=profAbs.reduce((s,a)=>s+days(a.od,a.do),0);
+      const totalSati=profOV.reduce((s,o)=>s+Number(o.sati),0);
+      document.getElementById('prof-stats').innerHTML=`
+        <div class="sc"><div class="sl">Zahtevi</div><div class="sv">${profAbs.length}</div></div>
+        <div class="sc"><div class="sl">Odobreno</div><div class="sv">${profAbs.filter(a=>a.status==='Odobreno').length}</div></div>
+        <div class="sc"><div class="sl">Na čekanju</div><div class="sv">${profAbs.filter(a=>a.status==='Na čekanju').length}</div></div>
+        <div class="sc"><div class="sl">Radnih dana</div><div class="sv">${totalDana}</div></div>
+        <div class="sc"><div class="sl">Prekom. sati</div><div class="sv">${totalSati}</div></div>`;
+      const tb=document.getElementById('prof-abs-tb');
+      if(!profAbs.length){tb.innerHTML='<tr><td colspan="7"><div class="es">Nema evidencija.</div></td></tr>';return;}
+      tb.innerHTML=profAbs.map(a=>`<tr>
+        <td><span class="badge ${tc(a.tip)}">${a.tip}</span></td>
+        <td>${fmt(a.od)}</td><td>${fmt(a.do)}</td>
+        <td style="font-family:'DM Mono',monospace">${days(a.od,a.do)}</td>
+        <td><span class="badge ${sc(a.status)}">${a.status}</span></td>
+        <td style="font-size:12px;color:var(--text2)">${a.napomena||'—'}${a.komentar?`<br><em style="color:#2e7d32">↳ ${a.komentar}</em>`:''}</td>
+        <td><button class="btn btn-sm" onclick="oStFromProf('${a.id}')">Status</button></td>
+      </tr>`).join('');
+    }catch(e){document.getElementById('prof-abs-tb').innerHTML=`<tr><td colspan="7"><div class="es">Greška.</div></td></tr>`;}
+  } else {
+    loading('prof-ov-tb',4);
+    try{
+      profOV=await dbGet('overtime',`?user_id=eq.${profUserId}&order=datum.desc`);
+      const tb=document.getElementById('prof-ov-tb');
+      if(!profOV.length){tb.innerHTML='<tr><td colspan="4"><div class="es">Nema prekovremenih sati.</div></td></tr>';return;}
+      tb.innerHTML=profOV.map(o=>`<tr>
+        <td>${fmt(o.datum)}</td>
+        <td style="font-family:'DM Mono',monospace;font-weight:500">${o.sati}h</td>
+        <td style="font-size:12px;color:var(--text2)">${o.napomena||'—'}</td>
+        <td><button class="btn btn-sm btn-danger" onclick="dOVFromProf('${o.id}')">Briši</button></td>
+      </tr>`).join('');
+    }catch(e){}
+  }
+}
+function oStFromProf(absId){cm('profm');setTimeout(()=>oSt(absId),150);}
+async function dOVFromProf(id){if(!confirm('Obrisati?'))return;await dbDel('overtime',`?id=eq.${id}`);toast('Obrisano.');profTab('prekovremeni');}
+
+// ── ADMIN ENTRY ────────────────────────────────────────────────────
+let admemUserId=null,admemTab_='odsustvo';
+function oAdmEntry(userId){
+  admemUserId=userId;const u=allUsers.find(x=>x.id===userId);
+  document.getElementById('admem-title').textContent='Unesi u ime: '+u.name;
+  document.getElementById('admem-who').textContent=u.dept+' · '+u.username;
+  document.getElementById('admem-err').style.display='none';
+  ['admem-od','admem-do','admem-ovdat'].forEach(id=>document.getElementById(id).value='');
+  ['admem-nap','admem-ovnap'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('admem-ovsati').value='';
+  document.getElementById('admem-st').value='Odobreno';
+  admemTab('odsustvo');document.getElementById('admem').classList.add('open');
+}
+function admemTab(t){
+  admemTab_=t;
+  document.getElementById('admem-abs').style.display=t==='odsustvo'?'block':'none';
+  document.getElementById('admem-ov').style.display=t==='prekovremeni'?'block':'none';
+  document.getElementById('admem-t1').classList.toggle('active',t==='odsustvo');
+  document.getElementById('admem-t2').classList.toggle('active',t==='prekovremeni');
+  document.getElementById('admem-err').style.display='none';
+}
+async function saveAdmEntry(){
+  const u=allUsers.find(x=>x.id===admemUserId);
+  const err=document.getElementById('admem-err');
+  try{
+    if(admemTab_==='odsustvo'){
+      const od=document.getElementById('admem-od').value,doo=document.getElementById('admem-do').value;
+      if(!od||!doo){err.style.display='block';return;}
+      await dbPost('absences',{user_id:u.id,ime:u.name,odeljenje:u.dept,tip:document.getElementById('admem-tip').value,od,do:doo,status:document.getElementById('admem-st').value,napomena:document.getElementById('admem-nap').value.trim(),komentar:'Uneo admin'});
+    }else{
+      const dat=document.getElementById('admem-ovdat').value,sati=parseFloat(document.getElementById('admem-ovsati').value);
+      if(!dat||!sati||sati<=0){err.style.display='block';return;}
+      await dbPost('overtime',{user_id:u.id,ime:u.name,odeljenje:u.dept,datum:dat,sati,napomena:document.getElementById('admem-ovnap').value.trim()});
+    }
+    cm('admem');toast('Sačuvano!');renderA();renderAOV();
+  }catch(e){err.textContent='Greška: '+e.message;err.style.display='block';}
+}
+
+// ── CSV ────────────────────────────────────────────────────────────
+function expCSV(){
+  const rows=[['Ime','Odeljenje','Vrsta','Od','Do','Dana','Status','Napomena','Komentar']];
+  allAdmAbs.forEach(a=>rows.push([a.ime,a.odeljenje,a.tip,fmt(a.od),fmt(a.do),days(a.od,a.do),a.status,a.napomena||'',a.komentar||'']));
+  const csv=rows.map(r=>r.map(c=>'"'+String(c).replace(/"/g,'""')+'"').join(',')).join('\n');
+  const blob=new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'});
+  const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='odsustva.csv';a.click();URL.revokeObjectURL(url);
+}
+</script>
+</body>
+</html>
