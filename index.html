@@ -9,11 +9,46 @@
   :root{--bg:#f7f6f3;--surface:#fff;--surface2:#f0efe9;--border:rgba(0,0,0,.09);--border2:rgba(0,0,0,.15);--text:#1a1917;--text2:#6b6a65;--text3:#9c9b96;--accent:#1a1917;--r:10px;--rl:14px;}
   *{box-sizing:border-box;margin:0;padding:0;}
   body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:14px;}
+  /* LOGIN */
   #ls{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:2rem;}
   .lc{background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);padding:2.5rem 2rem;width:100%;max-width:380px;}
   .lc .logo{font-size:12px;font-weight:500;color:var(--text3);letter-spacing:.09em;text-transform:uppercase;margin-bottom:2rem;}
   .lc h1{font-size:22px;font-weight:500;margin-bottom:.3rem;}
   .lc p{font-size:13px;color:var(--text2);margin-bottom:2rem;}
+  /* FIRMA PICKER (super admin) */
+  #fp{display:none;min-height:100vh;padding:2rem;}
+  .fp-inner{max-width:700px;margin:0 auto;}
+  .fp-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:2rem;}
+  .fp-header h2{font-size:19px;font-weight:500;}
+  .firma-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;}
+  .firma-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);padding:1.5rem;cursor:pointer;transition:all .15s;display:flex;flex-direction:column;gap:8px;}
+  .firma-card:hover{border-color:var(--accent);transform:translateY(-2px);}
+  .firma-card .fc-name{font-size:16px;font-weight:500;}
+  .firma-card .fc-meta{font-size:12px;color:var(--text3);font-family:'DM Mono',monospace;}
+  .firma-card .fc-arrow{font-size:18px;color:var(--text3);margin-top:4px;}
+  .add-firma-card{background:var(--surface2);border:1px dashed var(--border2);border-radius:var(--rl);padding:1.5rem;cursor:pointer;transition:all .15s;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:var(--text2);}
+  .add-firma-card:hover{border-color:var(--accent);color:var(--text);}
+  /* APP */
+  #app{display:none;min-height:100vh;}
+  .topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:0 1.5rem;height:54px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;}
+  .tbl{display:flex;align-items:center;gap:10px;min-width:0;}
+  .tbl-logo{font-size:13px;font-weight:600;letter-spacing:.04em;white-space:nowrap;}
+  .tdiv{width:1px;height:16px;background:var(--border2);flex-shrink:0;}
+  .firma-badge{font-size:12px;font-weight:500;padding:3px 10px;border-radius:999px;background:var(--surface2);color:var(--text2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:160px;}
+  .trole{font-size:12px;color:var(--text2);white-space:nowrap;}
+  .tbr{display:flex;align-items:center;gap:8px;flex-shrink:0;}
+  .uchip{display:flex;align-items:center;gap:8px;padding:4px 10px;background:var(--surface2);border-radius:999px;}
+  .uav{width:26px;height:26px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;flex-shrink:0;}
+  .uname{font-size:12px;font-weight:500;white-space:nowrap;}
+  /* GENERAL */
+  .main{padding:1.5rem;max-width:1100px;margin:0 auto;}
+  .ph{margin-bottom:1.5rem;}
+  .ph h2{font-size:19px;font-weight:500;}
+  .ph p{font-size:13px;color:var(--text2);margin-top:3px;}
+  .sr{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:10px;margin-bottom:1.5rem;}
+  .sc{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:13px 15px;}
+  .sc .sl{font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px;}
+  .sc .sv{font-size:26px;font-weight:300;font-family:'DM Mono',monospace;}
   .fg{margin-bottom:13px;}
   .fg label{display:block;font-size:12px;font-weight:500;color:var(--text2);margin-bottom:5px;}
   .fg input,.fg select,.fg textarea{width:100%;padding:9px 12px;border:1px solid var(--border2);border-radius:var(--r);font-family:inherit;font-size:13px;background:var(--surface);color:var(--text);outline:none;transition:border-color .15s;}
@@ -22,6 +57,7 @@
   .hint{font-size:11px;color:var(--text3);margin-top:4px;}
   .btn{display:inline-flex;align-items:center;gap:6px;padding:9px 18px;border-radius:var(--r);border:1px solid var(--border2);background:var(--surface);color:var(--text);font-family:inherit;font-size:13px;font-weight:500;cursor:pointer;transition:all .15s;}
   .btn:hover{background:var(--surface2);}
+  .btn:disabled{opacity:.5;cursor:not-allowed;}
   .btn-dark{background:var(--accent);color:#fff;border-color:var(--accent);}
   .btn-dark:hover{opacity:.86;background:var(--accent);}
   .btn-sm{padding:5px 11px;font-size:12px;}
@@ -31,30 +67,12 @@
   .btn-warn{border-color:#ffb74d;color:#e65100;}
   .btn-warn:hover{background:#fff8f0;}
   .ebox{font-size:12px;color:#c62828;background:#fdecea;border:1px solid #ef9a9a;border-radius:var(--r);padding:8px 12px;margin-top:10px;display:none;}
-  #app{display:none;min-height:100vh;}
-  .topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:0 1.5rem;height:54px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;}
-  .tbl{display:flex;align-items:center;gap:12px;}
-  .tbl-logo{font-size:13px;font-weight:600;letter-spacing:.04em;}
-  .tdiv{width:1px;height:16px;background:var(--border2);}
-  .trole{font-size:12px;color:var(--text2);}
-  .tbr{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
-  .uchip{display:flex;align-items:center;gap:8px;padding:4px 10px;background:var(--surface2);border-radius:999px;}
-  .uav{width:26px;height:26px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;}
-  .uname{font-size:12px;font-weight:500;}
-  .main{padding:1.5rem;max-width:1100px;margin:0 auto;}
-  .ph{margin-bottom:1.5rem;}
-  .ph h2{font-size:19px;font-weight:500;}
-  .ph p{font-size:13px;color:var(--text2);margin-top:3px;}
-  .sr{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:10px;margin-bottom:1.5rem;}
-  .sc{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:13px 15px;}
-  .sc .sl{font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px;}
-  .sc .sv{font-size:26px;font-weight:300;font-family:'DM Mono',monospace;}
   .toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:1.25rem;}
   .toolbar input,.toolbar select{padding:8px 12px;border:1px solid var(--border2);border-radius:var(--r);font-family:inherit;font-size:13px;background:var(--surface);color:var(--text);outline:none;}
   .toolbar input{flex:1;min-width:140px;}
   .tc{background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);overflow:hidden;}
   .tw{overflow-x:auto;}
-  table{width:100%;border-collapse:collapse;min-width:560px;}
+  table{width:100%;border-collapse:collapse;min-width:520px;}
   thead th{padding:10px 12px;font-size:11px;font-weight:500;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;background:var(--surface2);border-bottom:1px solid var(--border);text-align:left;white-space:nowrap;cursor:pointer;user-select:none;}
   thead th:hover{color:var(--text);}
   tbody tr{border-bottom:1px solid var(--border);transition:background .1s;}
@@ -79,7 +97,7 @@
   .tab.active{background:var(--surface);color:var(--text);box-shadow:0 1px 3px rgba(0,0,0,.08);}
   .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.28);z-index:200;align-items:center;justify-content:center;padding:1rem;overflow-y:auto;}
   .overlay.open{display:flex;}
-  .modal{background:var(--surface);border-radius:var(--rl);border:1px solid var(--border);padding:1.75rem;width:100%;max-width:420px;max-height:90vh;overflow-y:auto;}
+  .modal{background:var(--surface);border-radius:var(--rl);border:1px solid var(--border);padding:1.75rem;width:100%;max-width:420px;max-height:90vh;overflow-y:auto;margin:auto;}
   .modal h3{font-size:16px;font-weight:500;margin-bottom:1.25rem;}
   .fr2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
   .ma{display:flex;justify-content:flex-end;gap:8px;margin-top:1.25rem;}
@@ -94,16 +112,17 @@
   .pr{display:flex;gap:6px;align-items:center;}
   .pr input{flex:1;}
   .pr button{padding:9px 12px;border:1px solid var(--border2);border-radius:var(--r);background:var(--surface2);cursor:pointer;font-size:13px;}
-  .loading{display:flex;align-items:center;justify-content:center;padding:3rem;color:var(--text3);font-size:13px;gap:8px;}
+  .loading{display:flex;align-items:center;justify-content:center;padding:2.5rem;color:var(--text3);font-size:13px;gap:8px;}
   .spin{width:16px;height:16px;border:2px solid var(--border2);border-top-color:var(--text2);border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0;}
   @keyframes spin{to{transform:rotate(360deg)}}
   .toast{position:fixed;bottom:1.5rem;right:1.5rem;background:var(--accent);color:#fff;padding:10px 16px;border-radius:var(--r);font-size:13px;z-index:999;opacity:0;transition:opacity .2s;pointer-events:none;}
   .toast.show{opacity:1;}
-  @media(max-width:600px){.topbar{padding:0 1rem;}.main{padding:1rem;}.fr2{grid-template-columns:1fr;}.tbr .btn-sm:not(:last-child){display:none;}}
+  @media(max-width:640px){.topbar{padding:0 1rem;}.main{padding:1rem;}.fr2{grid-template-columns:1fr;}.firma-badge{max-width:100px;}}
 </style>
 </head>
 <body>
 
+<!-- LOGIN -->
 <div id="ls">
   <div class="lc">
     <div class="logo">Evidencija odsustva</div>
@@ -113,22 +132,44 @@
     <div class="fg"><label>Lozinka</label>
       <div class="pr"><input type="password" id="lp" placeholder="••••••••" autocomplete="current-password"><button type="button" onclick="tp('lp',this)">👁</button></div>
     </div>
-    <div id="lerr" class="ebox">Pogrešno korisničko ime ili lozinka.</div>
+    <div id="lerr" class="ebox"></div>
     <button class="btn btn-dark btn-full" style="margin-top:1rem" id="loginbtn" onclick="doLogin()">Prijavite se</button>
-    <p class="hint" style="margin-top:1.25rem;text-align:center">Podaci se čuvaju u cloudu — svi vide iste podatke.</p>
+    <p class="hint" style="margin-top:1.25rem;text-align:center">Podaci se čuvaju u cloudu — svi vide iste podatke u realnom vremenu.</p>
   </div>
 </div>
 
+<!-- FIRMA PICKER (super admin) -->
+<div id="fp">
+  <div class="fp-inner">
+    <div class="fp-header">
+      <div>
+        <h2>Izaberi firmu</h2>
+        <p style="font-size:13px;color:var(--text2);margin-top:3px">Super admin pregled</p>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <div class="uchip"><div class="uav" id="fp-av">SA</div><span class="uname" id="fp-name">Super Admin</span></div>
+        <button class="btn btn-sm" onclick="oMyPWfp()">Lozinka</button>
+        <button class="btn btn-sm" onclick="doLogout()">Odjava</button>
+      </div>
+    </div>
+    <div class="firma-grid" id="firma-grid"></div>
+  </div>
+</div>
+
+<!-- APP -->
 <div id="app">
   <div class="topbar">
     <div class="tbl">
       <span class="tbl-logo">Odsustva</span>
       <div class="tdiv"></div>
-      <span class="trole" id="troled">Zaposleni</span>
+      <span class="firma-badge" id="top-firma">—</span>
+      <div class="tdiv"></div>
+      <span class="trole" id="troled">Admin</span>
     </div>
     <div class="tbr">
       <div class="uchip"><div class="uav" id="topav">MK</div><span class="uname" id="topnm">—</span></div>
       <button class="btn btn-sm" id="btnmypw" style="display:none" onclick="oMyPW()">Lozinka</button>
+      <button class="btn btn-sm" id="btnback" style="display:none" onclick="backToFirme()">← Firme</button>
       <button class="btn btn-sm" onclick="doLogout()">Odjava</button>
     </div>
   </div>
@@ -161,18 +202,19 @@
 
     <!-- ADMIN VIEW -->
     <div id="admv" style="display:none">
-      <div class="ph"><h2>Admin panel</h2><p>Upravljanje nalozima i evidencija</p></div>
+      <div class="ph"><h2 id="adm-title">Admin panel</h2><p id="adm-sub">Upravljanje nalozima i evidencija</p></div>
       <div class="tabs">
         <button class="tab active" onclick="at('odsustva')">Odsustva</button>
         <button class="tab" onclick="at('prekovremeni')">Prekovremeni</button>
         <button class="tab" onclick="at('nalozi')">Nalozi</button>
+        <button class="tab" id="tab-firme-btn" style="display:none" onclick="at('firme')">Firme</button>
       </div>
       <div id="tabo">
         <div class="sr" id="admst"></div>
         <div class="toolbar">
-          <input type="text" id="aq" placeholder="Pretraži..." oninput="renderA()">
-          <select id="atip" onchange="renderA()"><option value="">Sve vrste</option><option>Bolovanje</option><option>Slobodan dan</option><option>Godišnji odmor</option><option>Prekovremeni</option><option>Plaćeno odsustvo</option><option>Neplaćeno odsustvo</option><option>Rad od kuće</option><option>Slava</option></select>
-          <select id="ast" onchange="renderA()"><option value="">Svi statusi</option><option>Odobreno</option><option>Na čekanju</option><option>Odbijeno</option></select>
+          <input type="text" id="aq" placeholder="Pretraži..." oninput="renderAFiltered()">
+          <select id="atip" onchange="renderAFiltered()"><option value="">Sve vrste</option><option>Bolovanje</option><option>Slobodan dan</option><option>Godišnji odmor</option><option>Prekovremeni</option><option>Plaćeno odsustvo</option><option>Neplaćeno odsustvo</option><option>Rad od kuće</option><option>Slava</option></select>
+          <select id="ast" onchange="renderAFiltered()"><option value="">Svi statusi</option><option>Odobreno</option><option>Na čekanju</option><option>Odbijeno</option></select>
           <button class="btn" onclick="expCSV()">↓ CSV</button>
         </div>
         <div class="tc"><div class="tw"><table>
@@ -192,14 +234,19 @@
         <div class="toolbar"><button class="btn btn-dark" onclick="openNA()">+ Novi nalog</button></div>
         <div class="ag" id="accg"></div>
       </div>
+      <div id="tabf" style="display:none">
+        <div class="toolbar"><button class="btn btn-dark" onclick="openFirmaModal()">+ Nova firma</button></div>
+        <div class="ag" id="firma-adm-grid"></div>
+      </div>
     </div>
 
   </div>
 </div>
 
-<!-- Profile modal -->
+<!-- MODALS -->
+<!-- Profile -->
 <div class="overlay" id="profm" style="align-items:flex-start;padding:1.5rem 1rem;">
-  <div class="modal" style="max-width:640px;width:100%;margin:auto;">
+  <div class="modal" style="max-width:640px;">
     <div style="display:flex;align-items:center;gap:12px;margin-bottom:1.25rem">
       <div class="aav" id="prof-av" style="width:44px;height:44px;font-size:15px;flex-shrink:0"></div>
       <div style="flex:1"><div style="font-size:16px;font-weight:500" id="prof-name"></div><div style="font-size:12px;color:var(--text2)" id="prof-dept"></div></div>
@@ -214,14 +261,14 @@
       <thead><tr><th>Vrsta</th><th>Od</th><th>Do</th><th>Dana</th><th>Status</th><th>Napomena</th><th></th></tr></thead>
       <tbody id="prof-abs-tb"></tbody>
     </table></div></div></div>
-    <div id="prof-ov-wrap" style="display:none"><div class="tc"><div class="tw"><table style="min-width:360px">
+    <div id="prof-ov-wrap" style="display:none"><div class="tc"><div class="tw"><table style="min-width:300px">
       <thead><tr><th>Datum</th><th>Sati</th><th>Napomena</th><th></th></tr></thead>
       <tbody id="prof-ov-tb"></tbody>
     </table></div></div></div>
   </div>
 </div>
 
-<!-- Absence modal -->
+<!-- Absence -->
 <div class="overlay" id="abm">
   <div class="modal">
     <h3 id="amtitle">Novo odsustvo</h3>
@@ -232,54 +279,57 @@
       <div class="fg"><label>Od datuma</label><input type="date" id="fod"></div>
       <div class="fg"><label>Do datuma</label><input type="date" id="fdo"></div>
     </div>
-    <div class="fg"><label>Napomena (opciono)</label><textarea id="fnap" placeholder="Razlog, detalji..."></textarea></div>
+    <div class="fg"><label>Napomena (opciono)</label><textarea id="fnap"></textarea></div>
     <div id="aberr" class="ebox">Popunite oba datuma.</div>
     <div class="ma"><button class="btn" onclick="cm('abm')">Otkaži</button><button class="btn btn-dark" onclick="saveAb()">Sačuvaj</button></div>
   </div>
 </div>
 
-<!-- Status modal -->
+<!-- Status -->
 <div class="overlay" id="stm">
   <div class="modal">
     <h3>Promeni status</h3>
     <p style="font-size:13px;color:var(--text2);margin-bottom:1.25rem" id="stdesc"></p>
     <div class="fg"><label>Status</label><select id="stval"><option>Odobreno</option><option>Na čekanju</option><option>Odbijeno</option></select></div>
-    <div class="fg"><label>Komentar (opciono)</label><textarea id="stkom" placeholder="Poruka zaposlenom..."></textarea></div>
+    <div class="fg"><label>Komentar (opciono)</label><textarea id="stkom"></textarea></div>
     <div class="ma"><button class="btn" onclick="cm('stm')">Otkaži</button><button class="btn btn-dark" onclick="saveSt()">Sačuvaj</button></div>
   </div>
 </div>
 
-<!-- Overtime modal -->
+<!-- Overtime -->
 <div class="overlay" id="ovm">
   <div class="modal">
     <h3 id="ovmtitle">Novi prekovremeni unos</h3>
     <div class="fg"><label>Datum</label><input type="date" id="ovdat"></div>
     <div class="fg"><label>Broj sati</label><input type="number" id="ovsati" min="0.5" max="24" step="0.5" placeholder="npr. 2.5"></div>
-    <div class="fg"><label>Napomena (opciono)</label><textarea id="ovnap" placeholder="Opis posla, projekat..."></textarea></div>
+    <div class="fg"><label>Napomena (opciono)</label><textarea id="ovnap"></textarea></div>
     <div id="overr" class="ebox">Popunite datum i broj sati.</div>
     <div class="ma"><button class="btn" onclick="cm('ovm')">Otkaži</button><button class="btn btn-dark" onclick="saveOV()">Sačuvaj</button></div>
   </div>
 </div>
 
-<!-- Account modal -->
+<!-- Account -->
 <div class="overlay" id="acm">
   <div class="modal">
     <h3 id="acmtitle">Novi nalog</h3>
     <div class="fg"><label>Ime i prezime</label><input type="text" id="aime" placeholder="npr. Jovana Marković"></div>
     <div class="fg"><label>Odeljenje</label>
-      <select id="adept"><option>Računovodstvo</option><option>HR</option><option>IT</option><option>Marketing</option><option>Prodaja</option><option>Logistika</option><option>Menadžment</option></select>
+      <select id="adept"><option>Računovodstvo</option><option>HR</option><option>IT</option><option>Marketing</option><option>Prodaja</option><option>Logistika</option><option>Menadžment</option><option>Uredništvo</option><option>Tehnika</option><option>Program</option><option>Voditelj</option></select>
     </div>
-    <div class="fg"><label>Korisničko ime</label><input type="text" id="aun" placeholder="npr. jovana.markovic"><p class="hint">Bez razmaka, koristi se za prijavu</p></div>
+    <div class="fg"><label>Korisničko ime</label><input type="text" id="aun" placeholder="npr. jovana.markovic"><p class="hint">Bez razmaka</p></div>
     <div class="fg"><label>Lozinka</label>
       <div class="pr"><input type="password" id="apw" placeholder="••••••••"><button type="button" onclick="tp('apw',this)">👁</button></div>
       <p class="hint" id="apwhint">Minimalno 4 karaktera</p>
     </div>
-    <div id="acerr" class="ebox">Popunite sva polja.</div>
+    <div class="fg" id="role-row"><label>Uloga</label>
+      <select id="arole"><option value="employee">Zaposleni</option><option value="admin">Admin firme</option></select>
+    </div>
+    <div id="acerr" class="ebox"></div>
     <div class="ma"><button class="btn" onclick="cm('acm')">Otkaži</button><button class="btn btn-dark" onclick="saveAcc()">Sačuvaj</button></div>
   </div>
 </div>
 
-<!-- Password modal -->
+<!-- Password -->
 <div class="overlay" id="pwm">
   <div class="modal">
     <h3>Promeni lozinku</h3>
@@ -287,12 +337,22 @@
     <div class="fg"><label>Nova lozinka</label>
       <div class="pr"><input type="password" id="pwnew" placeholder="••••••••"><button type="button" onclick="tp('pwnew',this)">👁</button></div>
     </div>
-    <div id="pwerr" class="ebox">Unesite lozinku (min. 4 karaktera).</div>
+    <div id="pwerr" class="ebox">Min. 4 karaktera.</div>
     <div class="ma"><button class="btn" onclick="cm('pwm')">Otkaži</button><button class="btn btn-dark" onclick="savePw()">Sačuvaj</button></div>
   </div>
 </div>
 
-<!-- Admin entry modal -->
+<!-- Firma modal -->
+<div class="overlay" id="fmm">
+  <div class="modal">
+    <h3 id="fmm-title">Nova firma</h3>
+    <div class="fg"><label>Naziv firme</label><input type="text" id="fmm-name" placeholder="npr. Radio stanica XYZ"></div>
+    <div id="fmm-err" class="ebox"></div>
+    <div class="ma"><button class="btn" onclick="cm('fmm')">Otkaži</button><button class="btn btn-dark" onclick="saveFirma()">Sačuvaj</button></div>
+  </div>
+</div>
+
+<!-- Admin entry -->
 <div class="overlay" id="admem">
   <div class="modal">
     <h3 id="admem-title">Unesi u ime zaposlenog</h3>
@@ -317,7 +377,7 @@
       <div class="fg"><label>Broj sati</label><input type="number" id="admem-ovsati" min="0.5" max="24" step="0.5" placeholder="npr. 2.5"></div>
       <div class="fg"><label>Napomena (opciono)</label><textarea id="admem-ovnap"></textarea></div>
     </div>
-    <div id="admem-err" class="ebox">Popunite sva obavezna polja.</div>
+    <div id="admem-err" class="ebox"></div>
     <div class="ma"><button class="btn" onclick="cm('admem')">Otkaži</button><button class="btn btn-dark" onclick="saveAdmEntry()">Sačuvaj</button></div>
   </div>
 </div>
@@ -325,24 +385,22 @@
 <div class="toast" id="toast"></div>
 
 <script>
-// ── SUPABASE CONFIG ────────────────────────────────────────────────
-const SB_URL = 'https://vhngsjrjgmjxzlvnmjza.supabase.co';
-const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZobmdzanJqZ21qeHpsdm5tanphIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM3NTM3ODUsImV4cCI6MjA4OTMyOTc4NX0.CkspA52SpFhRo6_J1qac8Lb7o-okDsGD-GqZQXE4gNc';
+const SB_URL='https://vhngsjrjgmjxzlvnmjza.supabase.co';
+const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZobmdzanJqZ21qeHpsdm5tanphIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM3NTM3ODUsImV4cCI6MjA4OTMyOTc4NX0.CkspA52SpFhRo6_J1qac8Lb7o-okDsGD-GqZQXE4gNc';
 
-async function sb(table, method='GET', body=null, query=''){
-  const url = `${SB_URL}/rest/v1/${table}${query}`;
-  const headers = {'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Content-Type':'application/json','Prefer':'return=representation'};
-  const res = await fetch(url,{method,headers,body:body?JSON.stringify(body):null});
+async function sb(table,method='GET',body=null,query=''){
+  const url=`${SB_URL}/rest/v1/${table}${query}`;
+  const h={'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Content-Type':'application/json','Prefer':'return=representation'};
+  const res=await fetch(url,{method,headers:h,body:body?JSON.stringify(body):null});
   if(!res.ok){const e=await res.text();throw new Error(e);}
-  const txt=await res.text();
-  return txt?JSON.parse(txt):[];
+  const t=await res.text();return t?JSON.parse(t):[];
 }
-const dbGet  = (t,q='')        => sb(t,'GET',null,q);
-const dbPost = (t,b)           => sb(t,'POST',b);
-const dbPatch= (t,q,b)        => sb(t,'PATCH',b,q);
-const dbDel  = (t,q)          => sb(t,'DELETE',null,q);
+const dbGet=(t,q='')=>sb(t,'GET',null,q);
+const dbPost=(t,b)=>sb(t,'POST',b);
+const dbPatch=(t,q,b)=>sb(t,'PATCH',b,q);
+const dbDel=(t,q)=>sb(t,'DELETE',null,q);
 
-// ── HELPERS ────────────────────────────────────────────────────────
+// helpers
 function days(a,b){if(!a||!b)return 0;let c=0,cur=new Date(a+'T09:00:00'),end=new Date(b+'T17:00:00');while(cur<=end){const d=cur.getDay();if(d>=1&&d<=5)c++;cur.setDate(cur.getDate()+1);}return c;}
 function fmt(d){if(!d)return'';const[y,m,dd]=d.split('-');return`${dd}.${m}.${y}`}
 function ini(n){return(n||'?').split(' ').map(w=>w[0]||'').join('').toUpperCase().slice(0,2)}
@@ -354,36 +412,114 @@ function loading(tbId,cols){document.getElementById(tbId).innerHTML=`<tr><td col
 function cm(id){document.getElementById(id).classList.remove('open');}
 document.querySelectorAll('.overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open');}));
 
-// ── SESSION ────────────────────────────────────────────────────────
-let CU=null;
+// STATE
+let CU=null, currentCompanyId=null, currentCompanyName='', allUsers=[], allAdmAbs=[], allAdmOV=[];
 
+// LOGIN
 async function doLogin(){
   const u=document.getElementById('lu').value.trim().toLowerCase();
   const p=document.getElementById('lp').value;
   const btn=document.getElementById('loginbtn');
   const err=document.getElementById('lerr');
-  if(!u||!p){err.style.display='block';err.textContent='Unesite korisničko ime i lozinku.';return;}
+  if(!u||!p){err.textContent='Unesite korisničko ime i lozinku.';err.style.display='block';return;}
   btn.textContent='Prijava...';btn.disabled=true;
   try{
     const users=await dbGet('users',`?username=eq.${encodeURIComponent(u)}&password=eq.${encodeURIComponent(p)}&select=*`);
-    if(!users.length){err.style.display='block';err.textContent='Pogrešno korisničko ime ili lozinka.';return;}
-    err.style.display='none';CU=users[0];showApp();
-  }catch(e){err.style.display='block';err.textContent='Greška pri prijavi: '+e.message;}
+    if(!users.length){err.textContent='Pogrešno korisničko ime ili lozinka.';err.style.display='block';return;}
+    err.style.display='none';
+    CU=users[0];
+    if(CU.role==='superadmin'){showFirmaPicker();}
+    else{currentCompanyId=CU.company_id;showApp();}
+  }catch(e){err.textContent='Greška: '+e.message;err.style.display='block';}
   finally{btn.textContent='Prijavite se';btn.disabled=false;}
 }
 ['lu','lp'].forEach(id=>document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter')doLogin()}));
 
-function doLogout(){CU=null;document.getElementById('app').style.display='none';document.getElementById('ls').style.display='flex';document.getElementById('lp').value='';}
-
-function showApp(){
-  document.getElementById('ls').style.display='none';document.getElementById('app').style.display='block';
-  document.getElementById('topnm').textContent=CU.name;document.getElementById('topav').textContent=ini(CU.name);
-  document.getElementById('troled').textContent=CU.role==='admin'?'Administrator':CU.dept;
-  if(CU.role==='admin'){document.getElementById('empv').style.display='none';document.getElementById('admv').style.display='block';document.getElementById('btnmypw').style.display='inline-flex';renderA();renderAccG();}
-  else{document.getElementById('empv').style.display='block';document.getElementById('admv').style.display='none';document.getElementById('btnmypw').style.display='none';renderE();}
+function doLogout(){
+  CU=null;currentCompanyId=null;currentCompanyName='';
+  ['app','fp'].forEach(id=>document.getElementById(id).style.display='none');
+  document.getElementById('ls').style.display='flex';
+  document.getElementById('lp').value='';
+  document.getElementById('lerr').style.display='none';
 }
 
-// ── EMPLOYEE ABSENCES ──────────────────────────────────────────────
+// SUPER ADMIN - FIRMA PICKER
+async function showFirmaPicker(){
+  document.getElementById('ls').style.display='none';
+  document.getElementById('app').style.display='none';
+  document.getElementById('fp').style.display='block';
+  document.getElementById('fp-av').textContent=ini(CU.name);
+  document.getElementById('fp-name').textContent=CU.name;
+  loadFirmaGrid();
+}
+
+async function loadFirmaGrid(){
+  const grid=document.getElementById('firma-grid');
+  grid.innerHTML='<div class="loading"><div class="spin"></div>Učitavanje...</div>';
+  try{
+    const firme=await dbGet('companies','?order=name.asc');
+    const users=await dbGet('users','?role=eq.employee&select=company_id');
+    grid.innerHTML='';
+    firme.forEach(f=>{
+      const count=users.filter(u=>u.company_id===f.id).length;
+      const card=document.createElement('div');
+      card.className='firma-card';
+      card.innerHTML=`<div class="fc-name">${f.name}</div><div class="fc-meta">${count} zaposlenih</div><div class="fc-arrow">→</div>`;
+      card.onclick=()=>enterFirma(f.id,f.name);
+      grid.appendChild(card);
+    });
+    const addCard=document.createElement('div');
+    addCard.className='add-firma-card';
+    addCard.innerHTML='<span style="font-size:22px">+</span><span style="font-size:13px;font-weight:500">Dodaj firmu</span>';
+    addCard.onclick=()=>openFirmaModalFP();
+    grid.appendChild(addCard);
+  }catch(e){grid.innerHTML=`<p style="color:#c62828;font-size:13px">Greška: ${e.message}</p>`;}
+}
+
+function enterFirma(companyId,companyName){
+  currentCompanyId=companyId;
+  currentCompanyName=companyName;
+  showApp();
+}
+
+function backToFirme(){
+  document.getElementById('app').style.display='none';
+  showFirmaPicker();
+}
+
+// SHOW APP
+function showApp(){
+  document.getElementById('ls').style.display='none';
+  document.getElementById('fp').style.display='none';
+  document.getElementById('app').style.display='block';
+  // topbar
+  const compName=currentCompanyName||(CU.role!=='superadmin'?'':currentCompanyName);
+  document.getElementById('top-firma').textContent=compName||'—';
+  document.getElementById('topnm').textContent=CU.name;
+  document.getElementById('topav').textContent=ini(CU.name);
+  const roleLabel={superadmin:'Super admin',admin:'Admin',employee:'Zaposleni'}[CU.role]||CU.role;
+  document.getElementById('troled').textContent=roleLabel;
+  document.getElementById('btnmypw').style.display=(CU.role==='admin'||CU.role==='superadmin')?'inline-flex':'none';
+  document.getElementById('btnback').style.display=CU.role==='superadmin'?'inline-flex':'none';
+
+  if(CU.role==='employee'){
+    document.getElementById('empv').style.display='block';
+    document.getElementById('admv').style.display='none';
+    renderE();
+  } else {
+    document.getElementById('empv').style.display='none';
+    document.getElementById('admv').style.display='block';
+    document.getElementById('adm-title').textContent=currentCompanyName||'Admin panel';
+    document.getElementById('adm-sub').textContent='Upravljanje zaposlenima i evidencija';
+    document.getElementById('tab-firme-btn').style.display=CU.role==='superadmin'?'inline-block':'none';
+    at('odsustva');
+  }
+}
+
+// companyFilter for queries
+function cq(){return currentCompanyId?`&company_id=eq.${currentCompanyId}`:''}
+
+// EMPLOYEE VIEW
 let seC='od',seD=-1,allMyAbs=[];
 async function renderE(){
   loading('emptb',7);
@@ -414,7 +550,6 @@ function et(t){
   document.querySelectorAll('#empv .tab').forEach((x,i)=>x.classList.toggle('active',['odsustva','prekovremeni'][i]===t));
   if(t==='prekovremeni')renderOV();
 }
-
 let eAbId=null;
 function openAM(id){
   eAbId=id||null;
@@ -428,20 +563,15 @@ function eAbs(id){openAM(id);}
 async function saveAb(){
   const od=document.getElementById('fod').value,doo=document.getElementById('fdo').value;
   if(!od||!doo){document.getElementById('aberr').style.display='block';return;}
-  const body={user_id:CU.id,ime:CU.name,odeljenje:CU.dept,tip:document.getElementById('ftip').value,od,do:doo,napomena:document.getElementById('fnap').value.trim(),komentar:''};
   try{
-    if(eAbId){await dbPatch('absences',`?id=eq.${eAbId}`,{tip:body.tip,od,do:doo,napomena:body.napomena});}
-    else{body.status='Na čekanju';await dbPost('absences',body);}
+    if(eAbId){await dbPatch('absences',`?id=eq.${eAbId}`,{tip:document.getElementById('ftip').value,od,do:doo,napomena:document.getElementById('fnap').value.trim()});}
+    else{await dbPost('absences',{user_id:CU.id,company_id:CU.company_id,ime:CU.name,odeljenje:CU.dept,tip:document.getElementById('ftip').value,od,do:doo,status:'Na čekanju',napomena:document.getElementById('fnap').value.trim(),komentar:''});}
     cm('abm');toast('Sačuvano!');renderE();
   }catch(e){document.getElementById('aberr').textContent='Greška: '+e.message;document.getElementById('aberr').style.display='block';}
 }
-async function dAbs(id){
-  if(!confirm('Obrisati zahtev?'))return;
-  await dbDel('absences',`?id=eq.${id}`);
-  toast('Obrisano.');renderE();
-}
+async function dAbs(id){if(!confirm('Obrisati?'))return;await dbDel('absences',`?id=eq.${id}`);toast('Obrisano.');renderE();}
 
-// ── EMPLOYEE OVERTIME ──────────────────────────────────────────────
+// EMPLOYEE OVERTIME
 let sovC='datum',sovD=-1,eOvId=null,allMyOV=[];
 async function renderOV(){
   loading('ovtb',4);
@@ -455,14 +585,14 @@ async function renderOV(){
       <div class="sc"><div class="sl">Ovaj mesec</div><div class="sv">${allMyOV.filter(o=>o.datum&&o.datum.slice(0,7)===mesec).reduce((s,o)=>s+Number(o.sati),0)}</div></div>`;
     const data=[...allMyOV].sort((a,b)=>{let av=a[sovC]||'',bv=b[sovC]||'';if(sovC==='sati'){av=Number(a.sati);bv=Number(b.sati);}return av<bv?sovD:av>bv?-sovD:0;});
     const tb=document.getElementById('ovtb');
-    if(!data.length){tb.innerHTML='<tr><td colspan="4"><div class="es">Nema unetih prekovremenih sati.</div></td></tr>';return;}
+    if(!data.length){tb.innerHTML='<tr><td colspan="4"><div class="es">Nema prekovremenih sati.</div></td></tr>';return;}
     tb.innerHTML=data.map(o=>`<tr>
       <td>${fmt(o.datum)}</td>
       <td style="font-family:'DM Mono',monospace;font-weight:500">${o.sati}h</td>
       <td style="font-size:12px;color:var(--text2)">${o.napomena||'—'}</td>
       <td style="white-space:nowrap"><button class="btn btn-sm" onclick="eOV('${o.id}')">Uredi</button> <button class="btn btn-sm btn-danger" onclick="dOV('${o.id}')">Briši</button></td>
     </tr>`).join('');
-  }catch(e){document.getElementById('ovtb').innerHTML=`<tr><td colspan="4"><div class="es">Greška: ${e.message}</div></td></tr>`;}
+  }catch(e){document.getElementById('ovtb').innerHTML=`<tr><td colspan="4"><div class="es">Greška.</div></td></tr>`;}
 }
 function sov(c){if(sovC===c)sovD*=-1;else{sovC=c;sovD=1;}renderOV();}
 function openOVM(id){
@@ -477,25 +607,32 @@ function eOV(id){openOVM(id);}
 async function saveOV(){
   const dat=document.getElementById('ovdat').value,sati=parseFloat(document.getElementById('ovsati').value);
   if(!dat||!sati||sati<=0){document.getElementById('overr').style.display='block';return;}
-  const body={user_id:CU.id,ime:CU.name,odeljenje:CU.dept,datum:dat,sati,napomena:document.getElementById('ovnap').value.trim()};
   try{
-    if(eOvId){await dbPatch('overtime',`?id=eq.${eOvId}`,{datum:dat,sati,napomena:body.napomena});}
-    else{await dbPost('overtime',body);}
+    if(eOvId){await dbPatch('overtime',`?id=eq.${eOvId}`,{datum:dat,sati,napomena:document.getElementById('ovnap').value.trim()});}
+    else{await dbPost('overtime',{user_id:CU.id,company_id:CU.company_id,ime:CU.name,odeljenje:CU.dept,datum:dat,sati,napomena:document.getElementById('ovnap').value.trim()});}
     cm('ovm');toast('Sačuvano!');renderOV();
   }catch(e){document.getElementById('overr').textContent='Greška: '+e.message;document.getElementById('overr').style.display='block';}
 }
-async function dOV(id){
-  if(!confirm('Obrisati unos?'))return;
-  await dbDel('overtime',`?id=eq.${id}`);
-  toast('Obrisano.');renderOV();
+async function dOV(id){if(!confirm('Obrisati?'))return;await dbDel('overtime',`?id=eq.${id}`);toast('Obrisano.');renderOV();}
+
+// ADMIN TABS
+function at(t){
+  ['tabo','tabov','tabn','tabf'].forEach((id,i)=>document.getElementById(id).style.display=(['odsustva','prekovremeni','nalozi','firme'][i]===t)?'block':'none');
+  document.querySelectorAll('#admv .tab').forEach(x=>x.classList.remove('active'));
+  const tabs=['odsustva','prekovremeni','nalozi','firme'];
+  document.querySelectorAll('#admv .tab').forEach((x,i)=>{if(tabs[i]===t)x.classList.add('active');});
+  if(t==='odsustva')renderA();
+  if(t==='prekovremeni')renderAOV();
+  if(t==='nalozi')renderAccG();
+  if(t==='firme')renderFirmeAdm();
 }
 
-// ── ADMIN ABSENCES ─────────────────────────────────────────────────
-let saC='od',saD=-1,stId=null,allAdmAbs=[];
+// ADMIN ABSENCES
+let saC='od',saD=-1,stId=null;
 async function renderA(){
   loading('admtb',9);
   try{
-    allAdmAbs=await dbGet('absences','?order=od.desc');
+    allAdmAbs=await dbGet('absences',`?order=od.desc${cq()}`);
     const all=allAdmAbs;
     document.getElementById('admst').innerHTML=`
       <div class="sc"><div class="sl">Svi zahtevi</div><div class="sv">${all.length}</div></div>
@@ -512,7 +649,7 @@ function renderAFiltered(){
   let flt=allAdmAbs.filter(a=>(!q||a.ime.toLowerCase().includes(q)||a.odeljenje.toLowerCase().includes(q))&&(!ft||a.tip===ft)&&(!fs||a.status===fs));
   flt=[...flt].sort((a,b)=>{let av=a[saC]||'',bv=b[saC]||'';if(saC==='dana'){av=days(a.od,a.do);bv=days(b.od,b.do);}return av<bv?saD:av>bv?-saD:0;});
   const tb=document.getElementById('admtb');
-  if(!flt.length){tb.innerHTML='<tr><td colspan="9"><div class="es">Nema rezultata</div></td></tr>';return;}
+  if(!flt.length){tb.innerHTML='<tr><td colspan="9"><div class="es">Nema rezultata.</div></td></tr>';return;}
   tb.innerHTML=flt.map(a=>`<tr>
     <td style="font-weight:500">${a.ime}</td><td style="color:var(--text2)">${a.odeljenje}</td>
     <td><span class="badge ${tc(a.tip)}">${a.tip}</span></td>
@@ -523,9 +660,6 @@ function renderAFiltered(){
     <td style="white-space:nowrap"><button class="btn btn-sm" onclick="oSt('${a.id}')">Status</button> <button class="btn btn-sm btn-danger" onclick="aDel('${a.id}')">Briši</button></td>
   </tr>`).join('');
 }
-document.getElementById('aq').addEventListener('input',renderAFiltered);
-document.getElementById('atip').addEventListener('change',renderAFiltered);
-document.getElementById('ast').addEventListener('change',renderAFiltered);
 function sa(c){if(saC===c)saD*=-1;else{saC=c;saD=1;}renderAFiltered();}
 function oSt(id){
   stId=id;const a=allAdmAbs.find(x=>x.id===id);
@@ -534,63 +668,51 @@ function oSt(id){
   document.getElementById('stm').classList.add('open');
 }
 async function saveSt(){
-  try{
-    await dbPatch('absences',`?id=eq.${stId}`,{status:document.getElementById('stval').value,komentar:document.getElementById('stkom').value.trim()});
-    cm('stm');toast('Status promenjen!');renderA();
-  }catch(e){alert('Greška: '+e.message);}
+  try{await dbPatch('absences',`?id=eq.${stId}`,{status:document.getElementById('stval').value,komentar:document.getElementById('stkom').value.trim()});cm('stm');toast('Status promenjen!');renderA();}
+  catch(e){alert('Greška: '+e.message);}
 }
-async function aDel(id){
-  if(!confirm('Obrisati evidenciju?'))return;
-  await dbDel('absences',`?id=eq.${id}`);
-  toast('Obrisano.');renderA();
-}
-function at(t){
-  ['tabo','tabov','tabn'].forEach((id,i)=>document.getElementById(id).style.display=(['odsustva','prekovremeni','nalozi'][i]===t)?'block':'none');
-  document.querySelectorAll('#admv .tab').forEach((x,i)=>x.classList.toggle('active',['odsustva','prekovremeni','nalozi'][i]===t));
-  if(t==='prekovremeni')renderAOV();
-  if(t==='nalozi')renderAccG();
-}
+async function aDel(id){if(!confirm('Obrisati?'))return;await dbDel('absences',`?id=eq.${id}`);toast('Obrisano.');renderA();}
 
-// ── ADMIN OVERTIME ─────────────────────────────────────────────────
-let saovC='datum',saovD=-1,allAdmOV=[];
+// ADMIN OVERTIME
+let saovC='datum',saovD=-1;
 async function renderAOV(){
   loading('admovtb',6);
   try{
-    allAdmOV=await dbGet('overtime','?order=datum.desc');
+    allAdmOV=await dbGet('overtime',`?order=datum.desc${cq()}`);
     const mesec=new Date().toISOString().slice(0,7);
     document.getElementById('admovst').innerHTML=`
       <div class="sc"><div class="sl">Ukupno unosa</div><div class="sv">${allAdmOV.length}</div></div>
       <div class="sc"><div class="sl">Ukupno sati</div><div class="sv">${allAdmOV.reduce((s,o)=>s+Number(o.sati),0)}</div></div>
       <div class="sc"><div class="sl">Ovaj mesec</div><div class="sv">${allAdmOV.filter(o=>o.datum&&o.datum.slice(0,7)===mesec).reduce((s,o)=>s+Number(o.sati),0)}</div></div>`;
     const q=(document.getElementById('ovq').value||'').toLowerCase();
-    let flt=allAdmOV.filter(o=>!q||o.ime.toLowerCase().includes(q)||o.odeljenje.toLowerCase().includes(q));
-    flt=[...flt].sort((a,b)=>{let av=a[saovC]||'',bv=b[saovC]||'';if(saovC==='sati'){av=Number(a.sati);bv=Number(b.sati);}return av<bv?saovD:av>bv?-saovD:0;});
+    let flt=allAdmOV.filter(o=>!q||o.ime.toLowerCase().includes(q));
+    flt.sort((a,b)=>{let av=a[saovC]||'',bv=b[saovC]||'';if(saovC==='sati'){av=Number(a.sati);bv=Number(b.sati);}return av<bv?saovD:av>bv?-saovD:0;});
     const tb=document.getElementById('admovtb');
-    if(!flt.length){tb.innerHTML='<tr><td colspan="6"><div class="es">Nema rezultata</div></td></tr>';return;}
+    if(!flt.length){tb.innerHTML='<tr><td colspan="6"><div class="es">Nema podataka.</div></td></tr>';return;}
     tb.innerHTML=flt.map(o=>`<tr>
       <td style="font-weight:500">${o.ime}</td><td style="color:var(--text2)">${o.odeljenje}</td>
       <td>${fmt(o.datum)}</td><td style="font-family:'DM Mono',monospace;font-weight:500">${o.sati}h</td>
       <td style="font-size:12px;color:var(--text2)">${o.napomena||'—'}</td>
       <td><button class="btn btn-sm btn-danger" onclick="aDelOV('${o.id}')">Briši</button></td>
     </tr>`).join('');
-  }catch(e){document.getElementById('admovtb').innerHTML=`<tr><td colspan="6"><div class="es">Greška: ${e.message}</div></td></tr>`;}
+  }catch(e){document.getElementById('admovtb').innerHTML=`<tr><td colspan="6"><div class="es">Greška.</div></td></tr>`;}
 }
 function saov(c){if(saovC===c)saovD*=-1;else{saovC=c;saovD=1;}renderAOV();}
-async function aDelOV(id){if(!confirm('Obrisati unos?'))return;await dbDel('overtime',`?id=eq.${id}`);toast('Obrisano.');renderAOV();}
+async function aDelOV(id){if(!confirm('Obrisati?'))return;await dbDel('overtime',`?id=eq.${id}`);toast('Obrisano.');renderAOV();}
 
-// ── ACCOUNTS ───────────────────────────────────────────────────────
-let eAccId=null,allUsers=[];
+// ACCOUNTS
+let eAccId=null,profUserId=null,profAbs=[],profOV=[];
 async function renderAccG(){
   const g=document.getElementById('accg');
   g.innerHTML='<div class="loading"><div class="spin"></div>Učitavanje...</div>';
   try{
-    allUsers=await dbGet('users','?role=eq.employee&order=name.asc');
-    const allAbs=await dbGet('absences','?select=user_id,status');
-    if(!allUsers.length){g.innerHTML='<p style="color:var(--text3);font-size:13px;padding:1rem 0">Nema kreiranih naloga.</p>';return;}
+    allUsers=await dbGet('users',`?role=eq.employee&order=name.asc${cq()}`);
+    const allAbs=await dbGet('absences',`?select=user_id,status${cq()}`);
+    if(!allUsers.length){g.innerHTML='<p style="color:var(--text3);font-size:13px;padding:1rem 0">Nema kreiranih naloga. Kliknite + Novi nalog.</p>';return;}
     g.innerHTML=allUsers.map(u=>{
       const ua=allAbs.filter(a=>a.user_id===u.id),pn=ua.filter(a=>a.status==='Na čekanju').length;
       return`<div class="acard">
-        <div class="act" style="cursor:pointer" onclick="oProfile('${u.id}')" title="Klikni za pregled">
+        <div class="act" style="cursor:pointer" onclick="oProfile('${u.id}')">
           <div class="aav">${ini(u.name)}</div>
           <div style="flex:1"><div class="an" style="text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--border2)">${u.name}</div><div class="ad">${u.dept}</div></div>
           <span style="font-size:11px;color:var(--text3)">Pregled →</span>
@@ -606,43 +728,65 @@ async function renderAccG(){
     }).join('');
   }catch(e){g.innerHTML=`<p style="color:#c62828;font-size:13px">Greška: ${e.message}</p>`;}
 }
+
 function openNA(){
-  eAccId=null;document.getElementById('acmtitle').textContent='Novi nalog';
-  document.getElementById('aime').value='';document.getElementById('aun').value='';document.getElementById('apw').value='';
-  document.getElementById('apw').placeholder='••••••••';document.getElementById('apwhint').textContent='Minimalno 4 karaktera';
-  document.getElementById('acerr').style.display='none';document.getElementById('acm').classList.add('open');
+  eAccId=null;
+  document.getElementById('acmtitle').textContent='Novi nalog';
+  ['aime','aun','apw'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('apw').placeholder='••••••••';
+  document.getElementById('apwhint').textContent='Minimalno 4 karaktera';
+  document.getElementById('arole').value='employee';
+  document.getElementById('acerr').style.display='none';
+  document.getElementById('acm').classList.add('open');
 }
 function oEA(id){
   eAccId=id;const u=allUsers.find(x=>x.id===id);
-  document.getElementById('acmtitle').textContent='Uredi nalog';document.getElementById('aime').value=u.name;
-  document.getElementById('adept').value=u.dept;document.getElementById('aun').value=u.username;
-  document.getElementById('apw').value='';document.getElementById('apw').placeholder='Ostavite prazno = ne menjati';
+  document.getElementById('acmtitle').textContent='Uredi nalog';
+  document.getElementById('aime').value=u.name;document.getElementById('adept').value=u.dept;
+  document.getElementById('aun').value=u.username;document.getElementById('apw').value='';
+  document.getElementById('apw').placeholder='Ostavite prazno = ne menjati';
   document.getElementById('apwhint').textContent='Ostavite prazno ako ne menjate lozinku';
-  document.getElementById('acerr').style.display='none';document.getElementById('acm').classList.add('open');
+  document.getElementById('arole').value=u.role||'employee';
+  document.getElementById('acerr').style.display='none';
+  document.getElementById('acm').classList.add('open');
 }
 async function saveAcc(){
   const name=document.getElementById('aime').value.trim();
   const uname=document.getElementById('aun').value.trim().toLowerCase().replace(/\s/g,'');
   const pw=document.getElementById('apw').value;
+  const role=document.getElementById('arole').value;
   const err=document.getElementById('acerr');
   if(!name||!uname){err.textContent='Unesite ime i korisničko ime.';err.style.display='block';return;}
   try{
     if(eAccId){
-      const body={name,dept:document.getElementById('adept').value,username:uname};
+      const body={name,dept:document.getElementById('adept').value,username:uname,role};
       if(pw){if(pw.length<4){err.textContent='Min. 4 karaktera.';err.style.display='block';return;}body.password=pw;}
       await dbPatch('users',`?id=eq.${eAccId}`,body);
       await dbPatch('absences',`?user_id=eq.${eAccId}`,{ime:name,odeljenje:document.getElementById('adept').value});
       await dbPatch('overtime',`?user_id=eq.${eAccId}`,{ime:name,odeljenje:document.getElementById('adept').value});
     }else{
       if(!pw||pw.length<4){err.textContent='Unesite lozinku (min. 4).';err.style.display='block';return;}
-      await dbPost('users',{name,dept:document.getElementById('adept').value,username:uname,password:pw,role:'employee'});
+      await dbPost('users',{name,dept:document.getElementById('adept').value,username:uname,password:pw,role,company_id:currentCompanyId});
     }
     cm('acm');toast('Sačuvano!');renderAccG();
   }catch(e){err.textContent='Greška: '+e.message;err.style.display='block';}
 }
+
 let pwAccId=null;
-function oPW(id){pwAccId=id;const u=allUsers.find(x=>x.id===id);document.getElementById('pwdesc').textContent=`Promena lozinke za: ${u.name} (${u.username})`;document.getElementById('pwnew').value='';document.getElementById('pwerr').style.display='none';document.getElementById('pwm').classList.add('open');}
-function oMyPW(){pwAccId=CU.id;document.getElementById('pwdesc').textContent=`Promena vaše admin lozinke (${CU.username})`;document.getElementById('pwnew').value='';document.getElementById('pwerr').style.display='none';document.getElementById('pwm').classList.add('open');}
+function oPW(id){
+  pwAccId=id;
+  const u=allUsers.find(x=>x.id===id)||{name:CU.name,username:CU.username};
+  document.getElementById('pwdesc').textContent=`Promena lozinke za: ${u.name} (${u.username})`;
+  document.getElementById('pwnew').value='';document.getElementById('pwerr').style.display='none';
+  document.getElementById('pwm').classList.add('open');
+}
+function oMyPW(){
+  pwAccId=CU.id;
+  document.getElementById('pwdesc').textContent=`Promena vaše lozinke (${CU.username})`;
+  document.getElementById('pwnew').value='';document.getElementById('pwerr').style.display='none';
+  document.getElementById('pwm').classList.add('open');
+}
+function oMyPWfp(){oMyPW();document.getElementById('pwm').classList.add('open');}
 async function savePw(){
   const pw=document.getElementById('pwnew').value;
   if(!pw||pw.length<4){document.getElementById('pwerr').style.display='block';return;}
@@ -658,8 +802,7 @@ async function dAcc(id){
   toast('Nalog obrisan.');renderAccG();
 }
 
-// ── PROFILE VIEW ───────────────────────────────────────────────────
-let profUserId=null,profAbs=[],profOV=[];
+// PROFILE
 async function oProfile(userId){
   profUserId=userId;
   const u=allUsers.find(x=>x.id===userId);
@@ -679,14 +822,12 @@ async function profTab(t){
     try{
       profAbs=await dbGet('absences',`?user_id=eq.${profUserId}&order=od.desc`);
       profOV=await dbGet('overtime',`?user_id=eq.${profUserId}`);
-      const totalDana=profAbs.reduce((s,a)=>s+days(a.od,a.do),0);
-      const totalSati=profOV.reduce((s,o)=>s+Number(o.sati),0);
       document.getElementById('prof-stats').innerHTML=`
         <div class="sc"><div class="sl">Zahtevi</div><div class="sv">${profAbs.length}</div></div>
         <div class="sc"><div class="sl">Odobreno</div><div class="sv">${profAbs.filter(a=>a.status==='Odobreno').length}</div></div>
         <div class="sc"><div class="sl">Na čekanju</div><div class="sv">${profAbs.filter(a=>a.status==='Na čekanju').length}</div></div>
-        <div class="sc"><div class="sl">Radnih dana</div><div class="sv">${totalDana}</div></div>
-        <div class="sc"><div class="sl">Prekom. sati</div><div class="sv">${totalSati}</div></div>`;
+        <div class="sc"><div class="sl">Radnih dana</div><div class="sv">${profAbs.reduce((s,a)=>s+days(a.od,a.do),0)}</div></div>
+        <div class="sc"><div class="sl">Prekom. sati</div><div class="sv">${profOV.reduce((s,o)=>s+Number(o.sati),0)}</div></div>`;
       const tb=document.getElementById('prof-abs-tb');
       if(!profAbs.length){tb.innerHTML='<tr><td colspan="7"><div class="es">Nema evidencija.</div></td></tr>';return;}
       tb.innerHTML=profAbs.map(a=>`<tr>
@@ -697,8 +838,8 @@ async function profTab(t){
         <td style="font-size:12px;color:var(--text2)">${a.napomena||'—'}${a.komentar?`<br><em style="color:#2e7d32">↳ ${a.komentar}</em>`:''}</td>
         <td><button class="btn btn-sm" onclick="oStFromProf('${a.id}')">Status</button></td>
       </tr>`).join('');
-    }catch(e){document.getElementById('prof-abs-tb').innerHTML=`<tr><td colspan="7"><div class="es">Greška.</div></td></tr>`;}
-  } else {
+    }catch(e){}
+  }else{
     loading('prof-ov-tb',4);
     try{
       profOV=await dbGet('overtime',`?user_id=eq.${profUserId}&order=datum.desc`);
@@ -716,7 +857,7 @@ async function profTab(t){
 function oStFromProf(absId){cm('profm');setTimeout(()=>oSt(absId),150);}
 async function dOVFromProf(id){if(!confirm('Obrisati?'))return;await dbDel('overtime',`?id=eq.${id}`);toast('Obrisano.');profTab('prekovremeni');}
 
-// ── ADMIN ENTRY ────────────────────────────────────────────────────
+// ADMIN ENTRY
 let admemUserId=null,admemTab_='odsustvo';
 function oAdmEntry(userId){
   admemUserId=userId;const u=allUsers.find(x=>x.id===userId);
@@ -744,17 +885,80 @@ async function saveAdmEntry(){
     if(admemTab_==='odsustvo'){
       const od=document.getElementById('admem-od').value,doo=document.getElementById('admem-do').value;
       if(!od||!doo){err.style.display='block';return;}
-      await dbPost('absences',{user_id:u.id,ime:u.name,odeljenje:u.dept,tip:document.getElementById('admem-tip').value,od,do:doo,status:document.getElementById('admem-st').value,napomena:document.getElementById('admem-nap').value.trim(),komentar:'Uneo admin'});
+      await dbPost('absences',{user_id:u.id,company_id:currentCompanyId,ime:u.name,odeljenje:u.dept,tip:document.getElementById('admem-tip').value,od,do:doo,status:document.getElementById('admem-st').value,napomena:document.getElementById('admem-nap').value.trim(),komentar:'Uneo admin'});
     }else{
       const dat=document.getElementById('admem-ovdat').value,sati=parseFloat(document.getElementById('admem-ovsati').value);
       if(!dat||!sati||sati<=0){err.style.display='block';return;}
-      await dbPost('overtime',{user_id:u.id,ime:u.name,odeljenje:u.dept,datum:dat,sati,napomena:document.getElementById('admem-ovnap').value.trim()});
+      await dbPost('overtime',{user_id:u.id,company_id:currentCompanyId,ime:u.name,odeljenje:u.dept,datum:dat,sati,napomena:document.getElementById('admem-ovnap').value.trim()});
     }
     cm('admem');toast('Sačuvano!');renderA();renderAOV();
   }catch(e){err.textContent='Greška: '+e.message;err.style.display='block';}
 }
 
-// ── CSV ────────────────────────────────────────────────────────────
+// FIRME MANAGEMENT (super admin only)
+let editFirmaId=null;
+async function renderFirmeAdm(){
+  const g=document.getElementById('firma-adm-grid');
+  g.innerHTML='<div class="loading"><div class="spin"></div>Učitavanje...</div>';
+  try{
+    const firme=await dbGet('companies','?order=name.asc');
+    const admins=await dbGet('users','?role=eq.admin&select=company_id,name,username');
+    if(!firme.length){g.innerHTML='<p style="color:var(--text3);font-size:13px">Nema firmi.</p>';return;}
+    g.innerHTML=firme.map(f=>{
+      const fadmins=admins.filter(a=>a.company_id===f.id);
+      return`<div class="acard">
+        <div class="act">
+          <div class="aav" style="background:#534AB7">${ini(f.name)}</div>
+          <div style="flex:1"><div class="an">${f.name}</div><div class="ad">${fadmins.length?fadmins.map(a=>a.name).join(', '):'Nema admina'}</div></div>
+        </div>
+        <div class="am">${fadmins.length?'admin: '+fadmins.map(a=>a.username).join(', '):'Dodajte admina u Nalozi tabu'}</div>
+        <div class="aac">
+          <button class="btn btn-sm" onclick="enterFirma('${f.id}','${f.name.replace(/'/g,"\\'")}')">Otvori</button>
+          <button class="btn btn-sm" onclick="editFirma('${f.id}','${f.name.replace(/'/g,"\\'")}')">Preimenuj</button>
+          <button class="btn btn-sm btn-danger" onclick="deleteFirma('${f.id}')">Briši</button>
+        </div>
+      </div>`;
+    }).join('');
+  }catch(e){g.innerHTML=`<p style="color:#c62828;font-size:13px">Greška: ${e.message}</p>`;}
+}
+
+function openFirmaModal(){
+  editFirmaId=null;
+  document.getElementById('fmm-title').textContent='Nova firma';
+  document.getElementById('fmm-name').value='';
+  document.getElementById('fmm-err').style.display='none';
+  document.getElementById('fmm').classList.add('open');
+}
+function openFirmaModalFP(){openFirmaModal();}
+function editFirma(id,name){
+  editFirmaId=id;
+  document.getElementById('fmm-title').textContent='Preimenuj firmu';
+  document.getElementById('fmm-name').value=name;
+  document.getElementById('fmm-err').style.display='none';
+  document.getElementById('fmm').classList.add('open');
+}
+async function saveFirma(){
+  const name=document.getElementById('fmm-name').value.trim();
+  const err=document.getElementById('fmm-err');
+  if(!name){err.textContent='Unesite naziv firme.';err.style.display='block';return;}
+  try{
+    if(editFirmaId){await dbPatch('companies',`?id=eq.${editFirmaId}`,{name});}
+    else{await dbPost('companies',{name});}
+    cm('fmm');toast('Sačuvano!');
+    if(CU.role==='superadmin'&&document.getElementById('fp').style.display!=='none'){loadFirmaGrid();}
+    else{renderFirmeAdm();}
+  }catch(e){err.textContent='Greška: '+e.message;err.style.display='block';}
+}
+async function deleteFirma(id){
+  if(!confirm('Obrisati firmu i SVE njene podatke? Ovo se ne može poništiti!'))return;
+  await dbDel('absences',`?company_id=eq.${id}`);
+  await dbDel('overtime',`?company_id=eq.${id}`);
+  await dbDel('users',`?company_id=eq.${id}`);
+  await dbDel('companies',`?id=eq.${id}`);
+  toast('Firma obrisana.');renderFirmeAdm();
+}
+
+// CSV
 function expCSV(){
   const rows=[['Ime','Odeljenje','Vrsta','Od','Do','Dana','Status','Napomena','Komentar']];
   allAdmAbs.forEach(a=>rows.push([a.ime,a.odeljenje,a.tip,fmt(a.od),fmt(a.do),days(a.od,a.do),a.status,a.napomena||'',a.komentar||'']));
